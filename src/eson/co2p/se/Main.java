@@ -3,6 +3,9 @@ package eson.co2p.se;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * Call the server with
+ */
 public class Main {
 
     public static void main(String[] args) {
