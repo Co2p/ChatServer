@@ -15,6 +15,16 @@ public class nameServerConnection {
     private ArrayList<Object> content = new ArrayList<Object>();
     byte[] outputStream;
 
+    public nameServerConnection(){
+        while (catalogue.keepAlive()){
+            try {
+                alive();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+}
+
     private void fillArrayLists(){
         getServerMessage NameServerPing = new getServerMessage(OpCodes.ALIVE);
         System.out.println(NameServerPing.getRawdata().length());

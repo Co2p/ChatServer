@@ -8,8 +8,8 @@ import java.net.InetAddress;
 public class catalogue {
 
     private static int idNumber;
+    private static boolean keepAlive;
     private static String name;
-    private static server server = new server();
     private static server nameServer = new server();
 
     catalogue(){}
@@ -20,6 +20,14 @@ public class catalogue {
      */
     public static void setIdNumber(int idNumber) {
         catalogue.idNumber = idNumber;
+    }
+
+    /**
+     * Decides if the server should stay alive
+     * @param bool set true to let the server continue
+     */
+    public static void keepAlive(boolean bool){
+        catalogue.keepAlive = bool;
     }
 
     /**
@@ -41,13 +49,11 @@ public class catalogue {
     }
 
     /**
-     * Set the server properties
-     * @param ip server adress
-     * @param port server port
+     * Decides if the server should stay alive
+     * @return is true to keep the server alive
      */
-    private static void setServer(InetAddress ip, int port){
-        server.setIp(ip);
-        server.setPort(port);
+    public static boolean keepAlive(){
+        return keepAlive;
     }
 
     /**
@@ -82,15 +88,4 @@ public class catalogue {
         return nameServer.getPort();
     }
 
-    public static server getServer(){
-        return server;
-    }
-
-    public static InetAddress getServerInet(){
-        return server.getIp();
-    }
-
-    public static int getServerPort(){
-        return server.getPort();
-    }
 }

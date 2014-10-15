@@ -15,5 +15,16 @@ public class Main {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+
+        final Thread nameServerCoThread;
+
+        nameServerCoThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new nameServerConnection();
+            }
+        });
+
+        nameServerCoThread.start();
     }
 }
