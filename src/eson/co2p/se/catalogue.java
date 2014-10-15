@@ -8,7 +8,7 @@ import java.net.InetAddress;
 public class catalogue {
 
     private static int idNumber;
-    private static String nick;
+    private static String name;
     private static server server = new server();
     private static server nameServer = new server();
 
@@ -27,7 +27,7 @@ public class catalogue {
      * @param name user name
      */
     public void setName(String name) {
-        this.nick = name;
+        this.name = name;
     }
 
     /**
@@ -63,7 +63,7 @@ public class catalogue {
      * @return user name
      */
     public String getNick() {
-        return nick;
+        return name;
     }
 
     /**

@@ -17,7 +17,7 @@ public class nameServerConnection {
     byte[] outputStream;
 
     private void fillArrayLists(){
-        getServerMessage NameServerPing = new getServerMessage(OpCodes.GETLIST);
+        getServerMessage NameServerPing = new getServerMessage(OpCodes.ALIVE);
         System.out.println(NameServerPing.getRawdata().length());
         outputStream  = NameServerPing.getData();
         System.out.println("Length of outputStream = " + outputStream.length);
@@ -27,7 +27,7 @@ public class nameServerConnection {
         }
     }
 
-    public void getUdpServerlist() throws Exception{
+    public void alive() throws Exception{
         fillArrayLists();
         System.out.println("Filled array list!");
 
