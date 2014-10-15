@@ -10,10 +10,11 @@ public abstract class message {
     //op is used for testing purposes and is not supposed to be used by
     //the program itself
     private int op;
+    private catalogue catalogue = new catalogue();
     private PDU rawdata;
 
     public void addOp(int op){
-        rawdata = new PDU(1);
+        rawdata = new PDU(8 + catalogue.getName().length());
         this.op = op;
         rawdata.setByte(0, (byte)op);
     }

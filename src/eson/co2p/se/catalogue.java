@@ -18,16 +18,16 @@ public class catalogue {
      * Sets the ID number that the client received from the server
      * @param idNumber the ID number
      */
-    public void setIdNumber(int idNumber) {
-        this.idNumber = idNumber;
+    public static void setIdNumber(int idNumber) {
+        catalogue.idNumber = idNumber;
     }
 
     /**
      * Sets the user name
      * @param name user name
      */
-    public void setName(String name) {
-        this.name = name;
+    public static void setName(String name) {
+        catalogue.name = name;
     }
 
     /**
@@ -35,7 +35,7 @@ public class catalogue {
      * @param ip server address
      * @param port server port
      */
-    public void setNameServer(InetAddress ip, int port){
+    public static void setNameServer(InetAddress ip, int port){
         nameServer.setIp(ip);
         nameServer.setPort(port);
     }
@@ -45,7 +45,7 @@ public class catalogue {
      * @param ip server adress
      * @param port server port
      */
-    private void setServer(InetAddress ip, int port){
+    private static void setServer(InetAddress ip, int port){
         server.setIp(ip);
         server.setPort(port);
     }
@@ -54,7 +54,7 @@ public class catalogue {
      * Returns the client ID number
      * @return ID number
      */
-    public int getIdNumber() {
+    public static int getIdNumber() {
         return idNumber;
     }
 
@@ -62,7 +62,7 @@ public class catalogue {
      * Returns the user name
      * @return user name
      */
-    public String getNick() {
+    public static String getName() {
         return name;
     }
 
@@ -70,27 +70,27 @@ public class catalogue {
      * Returns the nameserver as a server object
      * @return the server object
      */
-    public server getNameServer(){
+    public static server getNameServer(){
         return nameServer;
     }
 
-    public InetAddress getNameServerInet(){
+    public static InetAddress getNameServerInet(){
         return nameServer.getIp();
     }
 
-    public int getNameServerPort(){
+    public static int getNameServerPort(){
         return nameServer.getPort();
     }
 
-    public server getServer(){
+    public static server getServer(){
         return server;
     }
 
-    public InetAddress getServerInet(){
+    public static InetAddress getServerInet(){
         return server.getIp();
     }
 
-    public int getServerPort(){
+    public static int getServerPort(){
         return server.getPort();
     }
 }
