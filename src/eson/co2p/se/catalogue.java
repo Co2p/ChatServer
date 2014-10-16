@@ -11,6 +11,7 @@ public class catalogue {
     private static boolean keepAlive;
     private static String name;
     private static server nameServer = new server();
+    private static server thisServer = new server();
 
     catalogue(){}
 
@@ -86,6 +87,30 @@ public class catalogue {
 
     public static int getNameServerPort(){
         return nameServer.getPort();
+    }
+
+    /**
+     * Returns this server as a server object
+     * @return this server object
+     */
+    public static server getServer(){
+        return thisServer;
+    }
+
+    /**
+     * Returns this servers InetAddress
+     * @return this servers InetAddress
+     */
+    public static InetAddress getServerInet(){
+        return thisServer.getIp();
+    }
+
+    /**
+     * Returns this servers active port
+     * @return this servers port
+     */
+    public static int getServerPort(){
+        return thisServer.getPort();
     }
 
 }
