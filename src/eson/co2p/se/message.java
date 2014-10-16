@@ -25,41 +25,9 @@ public class message {
     }
 
     public byte[] alive(){
-        addOp();
-        rawdata.setByte(1, );
-    }
+        addOp(OpCodes.ALIVE);
+        //TODO hantera servrar i catalogue
 
-    public byte[] getServerMessage(){
-        addOp(OpCodes.GETLIST);
-        rawdata.extendTo(4);
-        return getData();
-    }
-
-    public byte[] connectToServerMessage(String username){
-        addOp(OpCodes.JOIN);
-        int usernameLength = username.getBytes().length;
-        rawdata.extendTo(4 + div4(usernameLength));
-        rawdata.setByte(1, (byte) usernameLength);
-        rawdata.setSubrange(4, username.getBytes());
-        return getData();
-    }
-
-    public byte[] quitServer(){
-        addOp(OpCodes.QUIT);
-        rawdata.extendTo(4);
-        return getData();
-    }
-
-    public byte[] changeNick(String nickname){
-        catalogue.setName(nickname);
-        addOp(OpCodes.CHNICK);
-        rawdata.extendTo(4 + div4(nickname.getBytes().length));
-        rawdata.setByte(1, (byte) nickname.getBytes().length);
-        try {
-            rawdata.setSubrange(4, nickname.getBytes("UTF-8"));
-        }catch(UnsupportedEncodingException e){
-            System.out.println("Unsupported Encoding Exception: " + e);
-        }
         return getData();
     }
 
@@ -86,6 +54,13 @@ public class message {
         }
         return rawdata.getBytes();
     }
+
+    public byte[] quitServer(){
+        addOp(OpCodes.QUIT);
+        rawdata.extendTo(4);
+        return getData();
+    }
+
 
     void addOp(int op){
         rawdata = new PDU(1);
