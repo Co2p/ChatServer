@@ -1,9 +1,6 @@
 package eson.co2p.se;
 
-import sun.jvm.hotspot.runtime.Bytes;
-
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -25,6 +22,11 @@ public class message {
         rawdata.setSubrange(8, catalogue.getName().getBytes());
 
         return getData();
+    }
+
+    public byte[] alive(){
+        addOp();
+        rawdata.setByte(1, );
     }
 
     public byte[] getServerMessage(){

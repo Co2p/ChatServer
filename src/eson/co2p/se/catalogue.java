@@ -1,6 +1,7 @@
 package eson.co2p.se;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 /**
  * Created by gordon on 15/10/14.
@@ -9,6 +10,7 @@ public class catalogue {
 
     private static int idNumber;
     private static boolean keepAlive;
+    private static ArrayList<server> clients = new ArrayList<server>();
     private static String name;
     private static server nameServer = new server();
     private static server thisServer = new server();
@@ -29,6 +31,19 @@ public class catalogue {
      */
     public static void keepAlive(boolean bool){
         catalogue.keepAlive = bool;
+    }
+
+    public static void addClient(server client){
+        clients.add(client);
+    }
+
+    public static void addClient(InetAddress ip, int port, String name){
+        server client = new server();
+        client.setIp(ip);
+        client.setPort(port);
+        client.setName(name);
+
+        addClient(client);
     }
 
     /**
