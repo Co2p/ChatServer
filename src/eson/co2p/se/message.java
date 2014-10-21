@@ -59,7 +59,7 @@ public class message {
     public static boolean checkRegConf(byte[] message){
         PDU rawdata = new PDU(message, message.length);
         if(rawdata.getByte(0) == OpCodes.ACK){
-            catalogue.setIdNumber(rawdata.getShort(1));
+            catalogue.setIdNumber(rawdata.getShort(2));
             System.out.println("ID: '" + catalogue.getIdNumber() + "'" );
             return true;
         }else{
