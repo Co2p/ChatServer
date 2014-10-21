@@ -54,6 +54,15 @@ public class message {
         return rawdata.getBytes();
     }
 
+    public static boolean checkRegConf(byte[] message){
+        PDU rawdata = new PDU(message, message.length);
+        if(rawdata.getByte(0) == OpCodes.ACK){
+            catalogue.setIdNumber(rawdata.getShort(1));
+        }else{
+            System.out.println("Got message, didn't get ACK");
+        }
+    }
+
     /**
      * changes the nick of the user
      *
