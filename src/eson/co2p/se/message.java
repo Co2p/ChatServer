@@ -8,21 +8,9 @@ import java.util.zip.GZIPOutputStream;
 /**
  * Created by isidor on 2014-10-15.
  *
- *  Includes all messages sent from the client to the nameserver or chatserver
+ *  Includes all messages sent from the the chatserver to the nameserver and clients
  */
 public class message {
-
-    /**
-     * creates a message that's supposed to be sent to the nameserver
-     * asking for a list of servers
-     *
-     * @return the created pdu with headers
-     */
-    /*public static byte[] getServerMessage(){
-        PDU rawdata = new PDU(4);
-        rawdata.setByte(0,(byte)OpCodes.GETLIST);
-        return rawdata.getBytes();
-    }*/
 
     /**
      * creates a message to be sent to a server asking for connection
@@ -34,7 +22,7 @@ public class message {
         PDU rawdata = new PDU(8 + div4(nameLength));
         rawdata.setByte(0,(byte)OpCodes.REG);
         rawdata.setByte(1, (byte) nameLength);
-        rawdata.setShort(2, (short)catalogue.getServerPort());
+        rawdata.setShort(2, (short) catalogue.getServerPort());
         System.out.println("Port:'" + catalogue.getServerPort() + "'");
         rawdata.setSubrange(4, catalogue.getServerInet().getAddress());
         System.out.println("This server ip:" + catalogue.getServerInet().toString());
@@ -67,62 +55,23 @@ public class message {
             return false;
         }
     }
-
-    /**
-     * changes the nick of the user
-     *
-     * @param nickname the name to be changed to
-     * @return the created PDU with headers and nick
-     */
-    public static byte[] changeNick(String nickname){
-        PDU rawdata = new PDU(4 + div4(nickname.getBytes().length));
-        catalogue.setName(nickname);
-        rawdata.setByte(0,(byte)OpCodes.CHNICK);
-        rawdata.setByte(1, (byte)div4(nickname.getBytes().length));
+    //#==============================================#
+    //#                Below is all                  #
+    //#       Messages sent to clients by server     #
+    //#==============================================#
+    public static byte[] userJoined(User user){
         try {
-            rawdata.setSubrange(4, nickname.getBytes("UTF-8"));
+            int nickLength = user.getNickname().getBytes("UTF-8").length;
+            PDU rawdata = new PDU(8 + div4(nickLength));
+            rawdata.setByte(0, (byte) OpCodes.UJOIN);
+            rawdata.setByte(1, (byte) nickLength);
+            rawdata.setInt(4, getTime());
+            rawdata.setSubrange(8, user.getNickname().getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
-            System.out.println("Unsupported Encoding Exception: " + e);
+            e.printStackTrace();
         }
-        return rawdata.getBytes();
     }
 
-    /**
-     *  String message = the message to be sent
-     *  int type = type of the message, eg. 0 = ordinary text, 1=compressed message
-     *  2=crypt message 3=compressed and crypt message
-     *
-     *  @param message the message to be sent
-     *  @param type ordinary/compressed/crypt
-     *  @return the converted bytearray containing the PDU header + message
-     */
-    /*public static byte[] sendMessage(String message, int type, int Tabid){
-        PDU rawdata = null;
-        try {
-            byte[] msgByte = message.getBytes("UTF-8");
-            //add encryption or compression based on the typ-input
-            switch(type){
-                case 1:
-                    msgByte = compress(msgByte);
-                    break;
-                case 2:
-                    msgByte = enCrypt(msgByte,Tabid);
-                    break;
-                case 3:
-                    msgByte = enCrypt(compress(msgByte),Tabid);
-                    break;
-            }
-            rawdata = new PDU(12 + div4(msgByte.length));
-            rawdata.setByte(0, (byte) OpCodes.MESSAGE);
-            rawdata.setByte(1,(byte)type);
-            rawdata.setShort(4, (short)div4(msgByte.length));
-            rawdata.setSubrange(12, msgByte);
-            rawdata.setByte(3, Checksum.calc(rawdata.getBytes(), rawdata.length()));
-        }catch(UnsupportedEncodingException e){
-            System.out.println("Unsupported Encoding Exception: " + e);
-        }
-        return rawdata.getBytes();
-    }*/
 
     /**
      * div4 tests if and int is divisible by four, if it isn't return the
