@@ -30,11 +30,12 @@ public class message {
      * @return  the created pdu with headers.
      */
     public static byte[] reqisterNS(){
-        int nameLength = div4(catalogue.getName().getBytes().length);
-        PDU rawdata = new PDU(8 + nameLength);
+        int nameLength = catalogue.getName().getBytes().length;
+        PDU rawdata = new PDU(8 + div4(nameLength));
         rawdata.setByte(0,(byte)OpCodes.REG);
         rawdata.setByte(1, (byte) nameLength);
         rawdata.setShort(2, (short)catalogue.getServerPort());
+        System.out.println("Port:'" + catalogue.getServerPort() + "'");
         rawdata.setSubrange(4, catalogue.getServerInet().getAddress());
         System.out.println("This server ip:" + catalogue.getServerInet().toString());
         try {
