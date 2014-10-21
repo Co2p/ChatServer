@@ -80,7 +80,7 @@ public class catalogue {
     /**
      * Decides if the server should stay alive
      * @return is true to keep the server alive
-     */
+    */
     public static boolean keepAlive(){
         return keepAlive;
     }
