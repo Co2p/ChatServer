@@ -35,7 +35,7 @@ public class User {
     public InetAddress getIp(){
         return ip;
     }
-
+    //Gets port
     public int getPort(){
         return port;
     }
