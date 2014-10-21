@@ -36,6 +36,7 @@ public class message {
         rawdata.setByte(1, (byte) nameLength);
         rawdata.setShort(2, (short)catalogue.getServerPort());
         rawdata.setSubrange(4, catalogue.getServerInet().getAddress());
+        System.out.println("This server ip:" + catalogue.getServerInet().toString());
         try {
             rawdata.setSubrange(8, catalogue.getName().getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
