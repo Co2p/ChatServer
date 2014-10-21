@@ -39,7 +39,7 @@ public class message {
 
     public static byte[] keepAlive(){
         PDU rawdata = new PDU(4);
-        rawdata.setByte(0,(byte)OpCodes.REG);
+        rawdata.setByte(0,(byte)OpCodes.ALIVE);
         rawdata.setByte(1, (byte)catalogue.getNrClients());
         rawdata.setShort(2, (short)catalogue.getIdNumber());
 
