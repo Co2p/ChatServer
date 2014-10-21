@@ -29,29 +29,19 @@ public class message {
      *
      * @return  the created pdu with headers.
      */
-    public static byte[] connectToServerMessage(){
-        int usernameLength = div4(catalogue.getNick().getBytes().length);
-        PDU rawdata = new PDU(4 + usernameLength);
-        rawdata.setByte(0,(byte)OpCodes.JOIN);
-        rawdata.setByte(1, (byte) usernameLength);
-        //rawdata.setShort(2, (byte)0);
+    public static byte[] reqisterNS(){
+        int nameLength = div4(catalogue.getName().getBytes().length);
+        PDU rawdata = new PDU(8 + nameLength);
+        rawdata.setByte(0,(byte)OpCodes.REG);
+        rawdata.setByte(1, (byte) nameLength);
+        rawdata.setShort(2, (short)catalogue.getServerPort());
+        rawdata.setSubrange(4, catalogue.getServerInet().getAddress());
         try {
-            rawdata.setSubrange(4, catalogue.getNick().getBytes("UTF-8"));
+            rawdata.setSubrange(8, catalogue.getName().getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
             System.out.println("Error encoding nickname: " + e);
             e.printStackTrace();
         }
-        return rawdata.getBytes();
-    }
-
-    /**
-     * creates a pdu for sending a quit-message to the server
-     *
-     * @return the created PDU with headers.
-     */
-    public static byte[] quitServer(){
-        PDU rawdata = new PDU(4);
-        rawdata.setByte(0,(byte)OpCodes.QUIT);
         return rawdata.getBytes();
     }
 
@@ -109,40 +99,6 @@ public class message {
             System.out.println("Unsupported Encoding Exception: " + e);
         }
         return rawdata.getBytes();
-    }
-
-    private static byte[] enCrypt(byte[] data, int Tabid){
-        byte[] newData = data;
-        Crypt.encrypt(newData, newData.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
-        PDU cryptPDU = new PDU(12 + div4(newData.length));
-        //The first byte is type of cryptography, it is 0 for the default XOR-method
-        //so add nothing...
-        cryptPDU.setByte(1, Checksum.calc(data, data.length));
-        cryptPDU.setShort(2, (short)newData.length);
-        cryptPDU.setShort(4, (short)data.length);
-        cryptPDU.setSubrange(12, newData);
-        cryptPDU.setByte(1, Checksum.calc(cryptPDU.getBytes(), cryptPDU.length()));
-        return cryptPDU.getBytes();
-    }
-
-    private static byte[] compress(byte[] data){
-        byte[] returnData = null;
-        try {
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream(data.length);
-            GZIPOutputStream gZip = new GZIPOutputStream(byteStream);
-            gZip.write(data);
-            gZip.close();
-            byteStream.close();
-            returnData = byteStream.toByteArray();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        PDU compPDU = new PDU(8 + div4(returnData.length));
-        compPDU.setShort(2, (short) returnData.length);
-        compPDU.setShort(4, (short) data.length);
-        compPDU.setSubrange(8, returnData);
-        compPDU.setByte(1, Checksum.calc(returnData, returnData.length));
-        return compPDU.getBytes();
     }
 
     /**
