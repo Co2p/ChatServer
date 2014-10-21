@@ -25,19 +25,9 @@ public class nameServerConnection {
         }
 }
 
-    private void fillArrayLists(){
-        getServerMessage NameServerPing = new getServerMessage(OpCodes.ALIVE);
-        System.out.println(NameServerPing.getRawdata().length());
-        outputStream  = NameServerPing.getData();
-        System.out.println("Length of outputStream = " + outputStream.length);
-        //kolla på råbinärkoden
-        for (byte b : outputStream) {
-            System.out.println(Integer.toBinaryString(b & 255 | 256).substring(1));
-        }
-    }
+
 
     public void alive() throws Exception{
-        fillArrayLists();
         System.out.println("Filled array list!");
 
         //BufferedReader nameserverAnswere = new BufferedReader(new InputStreamReader("OP: 1"));

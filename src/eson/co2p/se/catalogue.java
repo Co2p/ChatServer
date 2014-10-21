@@ -17,7 +17,7 @@ public class catalogue {
 
     catalogue(){}
 
-    public static int setThisServer(InetAddress ip, int port){
+    public static void setThisServer(InetAddress ip, int port){
         thisServer.setIp(ip);
         thisServer.setPort(port);
     }

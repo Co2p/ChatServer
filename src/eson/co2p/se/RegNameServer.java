@@ -20,11 +20,21 @@ public class RegNameServer {
      */
     public void regserver() throws SocketException {
         DatagramSocket clientSocket = new DatagramSocket();
-        byte[] sendData = message.getServerMessage();
+        //InetAddress adr = new InetAddress(InetAddress.getLoopbackAddress());
+        InetAddress myip = null;
+        try {
+            System.out.println("IP:" + Inet4Address.getLocalHost().getHostAddress());
+            myip = InetAddress.getByName(Inet4Address.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        catalogue.setThisServer(myip, 2222);
+        byte[] sendData = message.reqisterNS();
         byte[] receiveData = new byte[65507];
         ArrayList<Integer> format = new ArrayList<Integer>();
         ArrayList<Object> content = new ArrayList<Object>();
         try {
+            System.out.println(" " + catalogue.getNameServerInet() + catalogue.getNameServerPort());
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
             clientSocket.send(sendPacket);
         }catch (Exception e){
@@ -32,24 +42,18 @@ public class RegNameServer {
             e.printStackTrace();
         }
         //Waits for greg answere
+        System.out.print("FailedLOL");
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         try {
             clientSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
-
-
-        receivePacket.getData();
-
-
-        ArrayList serverlist = servers.getServerList();
-
-        //Print all info on servers, this is just for testing purposes
-        servers.printServers();
-
-        clientSocket.close();
-        return servers;
+        System.out.print("FailedLOL");
+        boolean Reged = message.checkRegConf(receivePacket.getData());
+        //receivePacket.getData();
+        if (Reged){
+            System.out.println("Sserver id: " + catalogue.getIdNumber());
+        }
     }
 }
