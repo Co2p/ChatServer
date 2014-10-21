@@ -17,6 +17,10 @@ public class catalogue {
 
     catalogue(){}
 
+    /**
+     *  returns number of clients connected to the server
+     * @return  number of clients
+     */
     public static int getNrClients(){
         return clients.size();
     }
