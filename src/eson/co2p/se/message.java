@@ -74,6 +74,21 @@ public class message {
         return rawdata.getBytes();
     }
 
+    public static byte[] userLeaved(User user){
+        PDU rawdata = null;
+        try {
+            int nickLength = user.getNickname().getBytes("UTF-8").length;
+            rawdata = new PDU(8 + div4(nickLength));
+            rawdata.setByte(0, (byte) OpCodes.ULEAVE);
+            rawdata.setByte(1, (byte) nickLength);
+            rawdata.setInt(4, getTime());
+            rawdata.setSubrange(8, user.getNickname().getBytes("UTF-8"));
+        }catch(UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+        return rawdata.getBytes();
+    }
+
 
     /**
      * div4 tests if and int is divisible by four, if it isn't return the
