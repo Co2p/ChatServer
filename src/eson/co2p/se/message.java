@@ -89,6 +89,27 @@ public class message {
         return rawdata.getBytes();
     }
 
+    public static byte[] changeNick(User user, String newNick){
+        PDU rawdata = null;
+        try {
+            int nickLength = user.getNickname().getBytes("UTF-8").length;
+            int newNickLength = newNick.getBytes("UTF-8").length;
+
+            rawdata = new PDU(8 + div4(nickLength) + div4(newNickLength));
+            rawdata.setByte(0, (byte) OpCodes.UCNICK);
+            rawdata.setByte(1, (byte) nickLength);
+            rawdata.setByte(2, (byte) newNickLength);
+            rawdata.setInt(4, getTime());
+            rawdata.setSubrange(8, user.getNickname().getBytes("UTF-8"));
+            rawdata.setSubrange(8 + div4(nickLength), newNick.getBytes("UTF-8"));
+
+            user.setNickname(newNick);
+
+        }catch(UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+        return rawdata.getBytes();
+    }
 
     /**
      * div4 tests if and int is divisible by four, if it isn't return the
