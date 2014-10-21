@@ -27,6 +27,7 @@ public class catalogue {
      * @return  number of clients
      */
     public static int getNrClients(){
+        System.out.println("Client size: '" + clients.size() + "'");
         return clients.size();
     }
 
