@@ -39,7 +39,7 @@ public class message {
         try {
             rawdata.setSubrange(8, catalogue.getName().getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
-            System.out.println("Error encoding nickname: " + e);
+            System.out.println("Error encoding serverName: " + e);
             e.printStackTrace();
         }
         return rawdata.getBytes();
