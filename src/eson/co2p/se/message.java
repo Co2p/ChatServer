@@ -1,5 +1,7 @@
 package eson.co2p.se;
 
+import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
+
 import java.io.*;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -59,6 +61,27 @@ public class message {
     //#                Below is all                  #
     //#       Messages sent to clients by server     #
     //#==============================================#
+    public static byte[] nickNames(){
+        int connected = catalogue.getNrClients();
+        PDU rawdata = new PDU(4);
+        rawdata.setByte(0, (byte)OpCodes.NICKS);
+        rawdata.setByte(1, (byte)connected);
+        try {
+            for (int i = 0; i < connected; i++) {
+                int currentSize = rawdata.length();
+                int nickLength = catalogue.getClient(i).getNickname().getBytes().length;
+                rawdata.extendTo(currentSize + nickLength + 1);
+                rawdata.setSubrange(currentSize, (catalogue.getClient(i).getNickname() + "\0").getBytes("UTF-8"));
+            }
+        }catch(UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+        if(rawdata.length()%4!=0){
+            rawdata.extendTo(rawdata.length()+rawdata.length()%4);
+        }
+        return rawdata.getBytes();
+    }
+
     public static byte[] userJoined(User user){
         PDU rawdata = null;
         try {
