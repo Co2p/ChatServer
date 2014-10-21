@@ -7,7 +7,7 @@ import java.net.InetAddress;
  */
 public class server {
     private InetAddress ip;
-    private String nick;
+    private String name;
     private int port;
     private int connected;
 
@@ -23,11 +23,11 @@ public class server {
     }
 
     /**
-     * Set the server nick
-     * @param nick server nick
+     * Set the server name
+     * @param name server name
      */
-    public void setName(String nick){
-        this.nick = nick;
+    public void setName(String name){
+        this.name = name;
     }
 
     /**
@@ -55,11 +55,11 @@ public class server {
     }
 
     /**
-     * Get the server nick
-     * @return server nick
+     * Get the server name
+     * @return server name
      */
     public String getName(){
-        return this.nick;
+        return this.name;
     }
 
     /**
