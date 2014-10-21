@@ -60,6 +60,7 @@ public class message {
         PDU rawdata = new PDU(message, message.length);
         if(rawdata.getByte(0) == OpCodes.ACK){
             catalogue.setIdNumber(rawdata.getShort(1));
+            System.out.println("ID: '" + catalogue.getIdNumber() + "'" );
             return true;
         }else{
             System.out.println("Got message, didn't get ACK");
