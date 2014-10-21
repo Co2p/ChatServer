@@ -63,7 +63,7 @@ public class message {
             System.out.println("ID: '" + catalogue.getIdNumber() + "'" );
             return true;
         }else{
-            System.out.println("Got message, didn't get ACK");
+            System.out.println("Got message, didn't get ACK " + rawdata.getByte(0));
             return false;
         }
     }

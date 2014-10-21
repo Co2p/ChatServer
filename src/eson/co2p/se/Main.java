@@ -1,5 +1,6 @@
 package eson.co2p.se;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -15,11 +16,13 @@ public class Main {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        catalogue.setName("Glorious");
+        catalogue.setName("tryhard");
         RegNameServer RegServer = new RegNameServer();
         try {
             RegServer.regserver();
         } catch (SocketException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 

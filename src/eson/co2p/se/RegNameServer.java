@@ -41,19 +41,29 @@ public class RegNameServer {
             System.out.print("Failed to send packet");
             e.printStackTrace();
         }
+        //System.out.println("Sserver iddsds");
         //Waits for greg answere
-        System.out.print("FailedLOL");
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         try {
             clientSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        System.out.print("FailedLOL");
         boolean Reged = message.checkRegConf(receivePacket.getData());
         //receivePacket.getData();
         if (Reged){
-            System.out.println("Sserver id: " + catalogue.getIdNumber());
+            System.out.println("Sserver idID: " + catalogue.getIdNumber());
+            Thread KeepServerAlive;
+
+            KeepServerAlive = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    new KeepAlive();
+                }
+            });
+            KeepServerAlive.start();
+            System.out.println("Server is now set to keep alive");
         }
+        while(true){;}
     }
 }
