@@ -10,7 +10,7 @@ public class catalogue {
 
     private static int idNumber;
     private static boolean keepAlive;
-    private static ArrayList<server> clients = new ArrayList<server>();
+    private static ArrayList<User> clients = new ArrayList<User>();
     private static String name;
     private static server nameServer = new server();
     private static server thisServer = new server();
@@ -27,6 +27,7 @@ public class catalogue {
      * @return  number of clients
      */
     public static int getNrClients(){
+        System.out.println("Client size: '" + clients.size() + "'");
         return clients.size();
     }
 
@@ -46,17 +47,17 @@ public class catalogue {
         catalogue.keepAlive = bool;
     }
 
-    public static void addClient(server client){
+    public static void addClient(User client){
         clients.add(client);
     }
 
     public static void addClient(InetAddress ip, int port, String name){
-        server client = new server();
-        client.setIp(ip);
-        client.setPort(port);
-        client.setName(name);
-
+        User client = new User(name, ip, port);
         addClient(client);
+    }
+
+    public static User getClient(int i){
+        return clients.get(i);
     }
 
     /**
