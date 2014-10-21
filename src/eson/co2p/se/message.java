@@ -60,9 +60,10 @@ public class message {
     //#       Messages sent to clients by server     #
     //#==============================================#
     public static byte[] userJoined(User user){
+        PDU rawdata = null;
         try {
             int nickLength = user.getNickname().getBytes("UTF-8").length;
-            PDU rawdata = new PDU(8 + div4(nickLength));
+            rawdata = new PDU(8 + div4(nickLength));
             rawdata.setByte(0, (byte) OpCodes.UJOIN);
             rawdata.setByte(1, (byte) nickLength);
             rawdata.setInt(4, getTime());
@@ -70,6 +71,7 @@ public class message {
         }catch(UnsupportedEncodingException e){
             e.printStackTrace();
         }
+        return rawdata.getBytes();
     }
 
 
