@@ -40,6 +40,7 @@ public class RegNameServer {
         }
 
 
+
         receivePacket.getData();
 
 
