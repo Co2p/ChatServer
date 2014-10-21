@@ -17,6 +17,10 @@ public class catalogue {
 
     catalogue(){}
 
+    public static int getNrClients(){
+        return clients.size();
+    }
+
     /**
      * Sets the ID number that the client received from the server
      * @param idNumber the ID number

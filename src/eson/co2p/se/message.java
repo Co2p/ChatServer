@@ -18,11 +18,11 @@ public class message {
      *
      * @return the created pdu with headers
      */
-    public static byte[] getServerMessage(){
+    /*public static byte[] getServerMessage(){
         PDU rawdata = new PDU(4);
         rawdata.setByte(0,(byte)OpCodes.GETLIST);
         return rawdata.getBytes();
-    }
+    }*/
 
     /**
      * creates a message to be sent to a server asking for connection
@@ -42,6 +42,15 @@ public class message {
             System.out.println("Error encoding nickname: " + e);
             e.printStackTrace();
         }
+        return rawdata.getBytes();
+    }
+
+    public static byte[] keepAlive(){
+        PDU rawdata = new PDU(4);
+        rawdata.setByte(0,(byte)OpCodes.REG);
+        rawdata.setByte(1, (byte)catalogue.getNrClients());
+        rawdata.setShort(2, (short)catalogue.getIdNumber());
+
         return rawdata.getBytes();
     }
 
@@ -73,7 +82,7 @@ public class message {
      *  @param type ordinary/compressed/crypt
      *  @return the converted bytearray containing the PDU header + message
      */
-    public static byte[] sendMessage(String message, int type, int Tabid){
+    /*public static byte[] sendMessage(String message, int type, int Tabid){
         PDU rawdata = null;
         try {
             byte[] msgByte = message.getBytes("UTF-8");
@@ -99,7 +108,7 @@ public class message {
             System.out.println("Unsupported Encoding Exception: " + e);
         }
         return rawdata.getBytes();
-    }
+    }*/
 
     /**
      * div4 tests if and int is divisible by four, if it isn't return the
