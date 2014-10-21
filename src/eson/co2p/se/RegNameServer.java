@@ -1,5 +1,6 @@
 package eson.co2p.se;
 
+import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
 
@@ -17,14 +18,12 @@ public class RegNameServer {
      * @return  a list of all servers returned by the nameservers
      * @throws Exception
      */
-    public static ServerList getUdpServerlist() throws Exception{
+    public void regserver() throws SocketException {
         DatagramSocket clientSocket = new DatagramSocket();
-        byte[] sendData = Message.getServerMessage();
+        byte[] sendData = message.getServerMessage();
         byte[] receiveData = new byte[65507];
         ArrayList<Integer> format = new ArrayList<Integer>();
         ArrayList<Object> content = new ArrayList<Object>();
-
-        //Tests to send a getservermessage to the given nameserver
         try {
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
             clientSocket.send(sendPacket);
@@ -32,12 +31,18 @@ public class RegNameServer {
             System.out.print("Failed to send packet");
             e.printStackTrace();
         }
-
-        //Waits and checks incoming data
+        //Waits for greg answere
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        clientSocket.receive(receivePacket);
-        //TODO check the OP-code of the recievePacket first
-        ServerList servers = new ServerList(receivePacket.getData());
+        try {
+            clientSocket.receive(receivePacket);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+
+        receivePacket.getData();
+
+
         ArrayList serverlist = servers.getServerList();
 
         //Print all info on servers, this is just for testing purposes
