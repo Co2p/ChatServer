@@ -17,6 +17,11 @@ public class catalogue {
 
     catalogue(){}
 
+    public static int setThisServer(InetAddress ip, int port){
+        thisServer.setIp(ip);
+        thisServer.setPort(port);
+    }
+
     /**
      *  returns number of clients connected to the server
      * @return  number of clients
