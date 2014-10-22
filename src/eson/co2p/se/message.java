@@ -72,7 +72,7 @@ public class message {
                 if(s != null) {
                     int currentSize = rawdata.length() - 1;
                     int nickLength = s.getNickname().getBytes().length;
-                    rawdata.extendTo(nickLength + 1);
+                    rawdata.extendTo(currentSize + nickLength);
                     rawdata.setSubrange(currentSize, (s.getNickname() + "\0").getBytes("UTF-8"));
                     System.out.println("NICK: " + s.getNickname());
                 }
