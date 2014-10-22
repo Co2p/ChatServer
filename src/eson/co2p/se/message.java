@@ -69,10 +69,12 @@ public class message {
         rawdata.setByte(1, (byte)connected);
         try {
             for(User s:users){
-                int currentSize = rawdata.length();
-                int nickLength = s.getNickname().getBytes().length;
-                rawdata.extendTo(currentSize + nickLength + 1);
-                rawdata.setSubrange(currentSize, (s.getNickname() + "\0").getBytes("UTF-8"));
+                if(s != null) {
+                    int currentSize = rawdata.length();
+                    int nickLength = s.getNickname().getBytes().length;
+                    rawdata.extendTo(currentSize + nickLength + 1);
+                    rawdata.setSubrange(currentSize, (s.getNickname() + "\0").getBytes("UTF-8"));
+                }
             }
 /*
             for (int i = 0; i < connected; i++) {
