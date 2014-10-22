@@ -77,6 +77,7 @@ public class message {
                     System.out.println("CurrentSize = " + currentSize + ", nickLength = " + nickLength);
                     rawdata.setSubrange(currentSize, (s.getNickname() + "\0").getBytes("UTF-8"));
                     System.out.println("NICK: " + s.getNickname());
+
                 }
             }
 /*

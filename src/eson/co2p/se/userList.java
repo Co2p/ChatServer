@@ -12,6 +12,7 @@ public class userList {
     private static ArrayList<Integer> removed = new ArrayList<Integer>();
     //private static Queue<Integer> removed;
     private static boolean first=true;
+    private static int Connected = 0;
 
     /**
      * Adds a user to the array of active users
@@ -23,6 +24,7 @@ public class userList {
             firstRun();
         }
         if (!removed.isEmpty()){
+            Connected++;
             ID = removed.get(removed.size()-1);
             removed.remove(removed.size()-1);
             user.setID(ID);
@@ -41,6 +43,7 @@ public class userList {
     public static void removeUser(int ID){
         users.set(ID, null);
         removed.add(ID);
+        Connected--;
     }
 
     /**
@@ -58,7 +61,7 @@ public class userList {
     }
 
     public static int getConnected(){
-        return users.size();
+        return Connected;
     }
 
     /**
