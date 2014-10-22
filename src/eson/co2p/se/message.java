@@ -61,6 +61,29 @@ public class message {
     //#                Below is all                  #
     //#       Messages sent to clients by server     #
     //#==============================================#
+
+    /**
+     * reMessage takes a message from a client and adds a nickname and
+     * time of sending out
+     *
+     * @param message   the incoming message
+     * @param nickname  the nickname of the bloke who wrote the message
+     * @return  new message with added nickname and timebytes
+     */
+    public static byte[] reMessage(byte[] message, String nickname){
+        PDU rawdata = new PDU(message, message.length);
+        rawdata.setByte(2, (byte)nickname.length());
+        rawdata.setInt(8, getTime());
+        int length = rawdata.length();
+        rawdata.extendTo(length + div4(nickname.length()));
+        try {
+            rawdata.setSubrange(length, nickname.getBytes("UTF-8"));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return rawdata.getBytes();
+    }
+
     public static byte[] nickNames(){
         ArrayList<User> users= userList.getUserList();
         int connected = userList.getConnected();
@@ -112,6 +135,12 @@ public class message {
         }catch(UnsupportedEncodingException e){
             e.printStackTrace();
         }
+        return rawdata.getBytes();
+    }
+
+    public static byte[] serverQuit(){
+        PDU rawdata = new PDU(4);
+        rawdata.setByte(0, (byte)OpCodes.QUIT);
         return rawdata.getBytes();
     }
 
