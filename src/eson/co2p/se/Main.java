@@ -18,7 +18,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        catalogue.setName("inte gordon");
+        catalogue.setName("Mr. Fantabulous");
 
         // creat an reg server object and start the function to keep the server alive
 
