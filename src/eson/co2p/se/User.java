@@ -9,6 +9,7 @@ public class User {
     String nickname;
     InetAddress ip;
     int port;
+    int ID;
 
     public User(String nickname, InetAddress ip, int port){
         setNickname(nickname);
@@ -26,6 +27,10 @@ public class User {
 
     public void setPort(int port){
         this.port = port;
+    }
+
+    public void setID(int ID){
+        this.ID = ID;
     }
 
     public String getNickname(){
