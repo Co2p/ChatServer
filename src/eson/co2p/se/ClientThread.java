@@ -14,6 +14,8 @@ public class ClientThread implements Runnable {
     private Socket passedSocket;
     private Integer ThreadUserId;
 
+    private String LastUser = "";
+
     private PrintStream outToServer;
     public DataInputStream Recived_Data;
 
@@ -25,44 +27,65 @@ public class ClientThread implements Runnable {
     }
 
 
+    public boolean NewUserChek(){
+        if (!userList.GetLastUser().equals(LastUser)){
+            LastUser = userList.GetLastUser();
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     @Override
     public void run() {
 
-        byte[] messageByte = new byte[1000];
+        while(true) {//TODO this is sh1t, can't stop, fix it later
 
-        System.out.print("reading data");
+            byte[] messageByte = new byte[1000];
 
-        int bytesRead = 0;
+            System.out.print("reading data");
 
-        try {
-            bytesRead = Recived_Data.read(messageByte);
-        } catch (IOException e) { e.printStackTrace();}
-        System.out.print("............");
-        if(bytesRead > 8) {
-            PDU temp = new PDU(messageByte, messageByte.length);
-            String Usernamr = checkReg(temp);
+            int bytesRead = 0;
 
-            System.out.println("Username: " + Usernamr);
-            if(Usernamr.equals(null)){
-                User user = createUser(Usernamr);
-                ThreadUserId = userList.addUser(user);
-                if(ThreadUserId.equals(null)){
+            if(!NewUserChek()) {
+
+                try {
+                    bytesRead = Recived_Data.read(messageByte);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.print("............");
+                if (bytesRead > 8) {
+                    PDU temp = new PDU(messageByte, messageByte.length);
+                    String Usernamr = checkReg(temp);
+                    System.out.println("Username: " + Usernamr + "\n");
+                    if (!Usernamr.equals(null)) {
+                        User user = createUser(Usernamr);
+                        ThreadUserId = userList.addUser(user);
+                        if (!ThreadUserId.equals(null)) {//om medelandet är ett Join
+                            try {
+                                outToServer.write(message.nickNames());
+                                userList.setLastUser(Usernamr);
+                                System.out.print("Sent accept!\n");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } else {
                     try {
-                        outToServer.write(message.nickNames());
-                        System.out.print("Sent accept!");
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        System.out.println("not able to sleep: " + e);
                     }
                 }
+            }else{
+                try {
+                    outToServer.write(message.userJoined(LastUser));
+                } catch (IOException e) {e.printStackTrace();}
             }
-        }else{
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                System.out.println("not able to sleep: " + e);
-            }
+            //do shit, shits done!
         }
-        //do shit, shits done!
     }
 
     private User createUser(String name){
