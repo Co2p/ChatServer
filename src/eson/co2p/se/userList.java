@@ -1,6 +1,7 @@
 package eson.co2p.se;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 /**
  * Stores users, has a upper limit of 255 at any given time
@@ -8,33 +9,36 @@ import java.util.ArrayList;
  */
 public class userList {
     private static ArrayList<User> users;
-    private static ArrayList<Integer> removed;
+    //private static ArrayList<Integer> removed;
+    private static Queue<Integer> removed;
     private static boolean first=true;
 
     /**
      * Adds a user to the array of active users
      * @param user the user to be added
      */
-    public static void addUser(User user){
-        if (first){
+    public static Integer addUser(User user){
+        Integer ID = null;
+        if(first){
             firstRun();
         }
         if (!removed.isEmpty()){
-            users.set(removed.remove(0), user);
+            ID = removed.remove();
+            user.setID(ID);
+            users.set(ID, user);
         }else{
-            if(users.size() < 255) {
-                users.add(user);
-            }
+            System.out.println("UserList full!");
         }
+        return ID;
     }
 
     /**
      * Sets the user to null and adds the index of the user as the next place to add a user
-     * @param i user index
+     * @param ID user ID
      */
-    public static void removeUser(int i){
-        users.set(i, null);
-        removed.add(0);
+    public static void removeUser(int ID){
+        users.set(ID, null);
+        removed.add(ID);
     }
 
     /**
@@ -51,10 +55,8 @@ public class userList {
      * Runs the first time a user is added, adds 254-0 to the arraylist so the user can be added
      */
     private static void firstRun(){
-        int i = 254;
-        for (User user : users) {
+        for(int i = 0; i < 255; i++){
             removed.add(i);
-            i--;
         }
         first=false;
     }
