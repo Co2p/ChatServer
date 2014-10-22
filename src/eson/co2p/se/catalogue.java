@@ -11,7 +11,6 @@ public class catalogue {
 
     private static int idNumber;
     private static boolean keepAlive;
-    private static ArrayList<User> clients = new ArrayList<User>();
     private static String[] ClientMessages = new String[256];
     private static String[] OldClientMessages = new String[256];
     private static String name;
@@ -59,15 +58,6 @@ public class catalogue {
     }
 
     /**
-     *  returns number of clients connected to the server
-     * @return  number of clients
-     */
-    public static int getNrClients(){
-        System.out.println("Client size: '" + clients.size() + "'");
-        return clients.size();
-    }
-
-    /**
      * Sets the ID number that the client received from the server
      * @param idNumber the ID number
      */
@@ -81,19 +71,6 @@ public class catalogue {
      */
     public static void keepAlive(boolean bool){
         catalogue.keepAlive = bool;
-    }
-
-    public static void addClient(User client){
-        clients.add(client);
-    }
-
-    public static void addClient(InetAddress ip, int port, String name){
-        User client = new User(name, ip, port);
-        addClient(client);
-    }
-
-    public static User getClient(int i){
-        return clients.get(i);
     }
 
     /**
