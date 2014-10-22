@@ -8,7 +8,7 @@ import java.util.Queue;
  * @author gordon on 22/10/14.
  */
 public class userList {
-    private static ArrayList<User> users;
+    private static ArrayList<User> users = new ArrayList<User>();
     //private static ArrayList<Integer> removed;
     private static Queue<Integer> removed;
     private static boolean first=true;
