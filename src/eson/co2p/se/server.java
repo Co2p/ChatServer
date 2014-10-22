@@ -3,55 +3,54 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by gordon on 15/10/14.
  */
 public class server {
+
     private InetAddress ip;
     private String name;
     private int port;
-    //private int connected;
-    private ServerSocket ClientScan = null;
-    private Socket Current_Connection;
 
-    public server(){}
+    public boolean StartServer(){
+        //TODO Get port from correct place, lol
+        ServerSocket serverSocket = null;
+        port = 8888;
 
-    public server(int Port) throws IOException {
-        port = Port;
-        System.out.println("got here 2");
-        try{
-            ClientScan = new ServerSocket(port);
-            System.out.println("Socket Created");
-        }
-        catch(Exception e){
-        }
-        ListenForClients();//TODO: en chekerklass som kör denna fler ggr vid behov, avoid ddos...
-    }
+        //TODO FIX client counter...
+        int nrofconnections = 0;
+        int maxconnections = 1000;
 
+        ArrayList<Thread> Threads = new ArrayList<Thread>();
 
-    public void ListenForClients(){
-        while(true){
-            if (!catalogue.GetClientListenerStatus()) {
-                while(!catalogue.setClientListenerStatus(true));
-                System.out.println("creating thread!!!!");
-                final Thread ClientAnswereThread;
-                ClientAnswereThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            new ServerFirstClientThread(Current_Connection, ClientScan, port);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                ClientAnswereThread.start();
-                System.out.println("Starting thread!!!!");
+        try {
+            serverSocket = new ServerSocket(port);
+            //every time an connection is made, start an new clientthread.
+
+            while (nrofconnections < maxconnections) {
+                System.out.print("Listening for clients..");
+                Socket ListeningSocket = serverSocket.accept();
+                System.out.print("making thread");
+                Thread ClientThread = new Thread(new ClientThread(ListeningSocket));
+
+                Threads.add(ClientThread);
+                System.out.print("Starting thread");
+                ClientThread.start();
+                System.out.print("thread started!");
+            }
+
+        } catch (IOException exp) {
+            exp.printStackTrace();
+        } finally {
+            try {
+                serverSocket.close();
+            } catch (Exception e) {
             }
         }
+        return true;
     }
-
     /**
      * Set the server ip
      * @param ip the ip
@@ -108,11 +107,4 @@ public class server {
         return this.port;
     }
 
-    /*/**
-    * * Get the number of connected clients to the server
-    * * @return connected clients
-    *
-    *public int getConnected(){
-    *return this.connected;
-    }*/
 }

@@ -57,7 +57,6 @@ public class RegNameServer {
         if (Reged){
             System.out.println("Sserver idID: " + catalogue.getIdNumber());
             Thread KeepServerAlive;
-
             KeepServerAlive = new Thread(new Runnable() {
                 @Override
                 public void run() {

@@ -1,44 +1,56 @@
 package eson.co2p.se;
-import javax.naming.ldap.UnsolicitedNotification;
-import java.io.*;
-import java.net.ServerSocket;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+
 /**
  * Created by Tony on 22/10/2014.
  */
-public class ClientThread {
-    Socket ClientSocket;
-    ServerSocket ServerSock;
+public class ClientThread implements Runnable {
+
+    private Socket passedSocket;
     private PrintStream outToServer;
+    public DataInputStream Recived_Data;
 
-
-    public ClientThread(byte[] messageByte,  Socket CurrentConnection, ServerSocket ClientScann) throws IOException {
-        ClientSocket = CurrentConnection;
-        ServerSock = ClientScann;
-        System.out.println("clientthread: lollaflefd");
-        PDU temp = new PDU(messageByte, messageByte.length);// är detta korekt?
-        String Usernamr = checkReg(temp);
-        System.out.println("clientthread pdu: " + temp);
-        System.out.println("clientthread username: " + Usernamr);
-        if(!Usernamr.equals(null)){
-            System.out.println("try to send answere....");
-            outToServer = new PrintStream(ClientSocket.getOutputStream(), true);
-            System.out.println("printstream redy...");
-            RegSendMessage();
-        }
+    public ClientThread(Socket gotensocked) throws IOException {
+        this.passedSocket = gotensocked;
+        Recived_Data = new DataInputStream(this.passedSocket.getInputStream());
+        outToServer = new PrintStream(this.passedSocket.getOutputStream(), true);
+        System.out.print("made inputs/outputs ant socket..");
     }
-    private void RegSendMessage(){
+
+    @Override
+    public void run() {
+
+        byte[] messageByte = new byte[1000];
+        System.out.print("reading data");
+        int bytesRead = 0;
         try {
-            System.out.println("writing to server");
-            outToServer.write(message.nickNames());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed to send join message");
+            bytesRead = Recived_Data.read(messageByte);
+        } catch (IOException e) { e.printStackTrace();}
+        System.out.print("............");
+        if(bytesRead > 8) {
+            PDU temp = new PDU(messageByte, messageByte.length);
+            String Usernamr = checkReg(temp);
+            System.out.println("Username: " + Usernamr);
+            if(Usernamr != null){
+                try {
+                    outToServer.write(message.nickNames());
+                    System.out.print("Sent accept!");
+                } catch (IOException e) {e.printStackTrace();}
+            }
+        }else{
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                System.out.println("not able to sleep: " + e);
+            }
         }
+        //do shit, shits done!
     }
-
-
-
     private String checkReg (PDU data){
         //Kolla om op-koden är REG, annars skicka tillbaks null
         String nick = null;

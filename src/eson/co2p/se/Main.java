@@ -11,46 +11,23 @@ import java.net.UnknownHostException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
         try {
             catalogue.setNameServer(InetAddress.getByName("itchy.cs.umu.se"), 1337);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        catalogue.setName("Gordons Superbra server som inte funkar");
+
+        catalogue.setName("en server");
+
+        // creat an reg server object and start the function to keep the server alive
+
         RegNameServer RegServer = new RegNameServer();
-        try {
-            RegServer.regserver();
-        } catch (SocketException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        System.out.println("got here1");
-        server StartListen = new server(catalogue.getServerPort());
-        while(true){;}
+        RegServer.regserver();
 
 
+        server ThisServer = new server();
+        while(ThisServer.StartServer()){;} //UEeWhatIDidThere?
 
-
-
-
-
-        /*
-        catalogue.setName("Glorious Chat");
-        try {
-            catalogue.setNameServer(InetAddress.getByName("itchy.cs.umu.se"), 1337);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-        final Thread nameServerCoThread;
-
-        nameServerCoThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new nameServerConnection();
-            }
-        });
-
-        nameServerCoThread.start();
-        */
     }
 }
