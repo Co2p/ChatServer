@@ -67,7 +67,7 @@ public class message {
         PDU rawdata = new PDU(4);
         rawdata.setByte(0, (byte)OpCodes.NICKS);
         System.out.println("Hur många den tror är connectade: " + connected);
-        rawdata.setByte(1, (byte)connected);
+        rawdata.setByte(1, (byte)userList.getConnected());
         try {
             for(User s:users){
                 if(s != null) {
