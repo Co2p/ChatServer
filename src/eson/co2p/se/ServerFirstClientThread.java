@@ -1,5 +1,6 @@
 package eson.co2p.se;
 
+import javax.naming.ldap.UnsolicitedNotification;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -45,13 +46,12 @@ public class ServerFirstClientThread {
             Buffert_In = Input;
             Data_Out = new DataOutputStream(out);
             //TODO: Skicka svar , ny funktion...
-            if(!Buffert_In.equals(null)&&!Data_Out.equals(null)) {
-
+            if(!Buffert_In.equals(null) && !Data_Out.equals(null)) {
                 byte[] messageByte = new byte[1000];
                 int bytesRead = Input.read(messageByte);
                 if(bytesRead > 8) {
                     PDU temp = new PDU(messageByte, messageByte.length);// är detta korekt?
-                    RecMessageBreakDown(temp);//TODO: isidor måste ta hand om clientförfrågn någonstans...
+                    checkReg(temp);//TODO: isidor måste ta hand om clientförfrågn någonstans...
                 }else {
                     try {
                         Thread.sleep(50);
@@ -64,5 +64,18 @@ public class ServerFirstClientThread {
                 System.out.println("Failed to read buffert");
             }
         }
+    }
+    private String checkReg (PDU data){
+        //Kolla om op-koden är REG, annars skicka tillbaks null
+        String nick = null;
+        if(data.getByte(0) == OpCodes.JOIN){
+            int nickLength = data.getByte(1);
+            try {
+                nick = new String(data.getSubrange(4, nickLength), "UTF-8");
+            }catch(UnsupportedEncodingException e){
+                e.printStackTrace();
+            }
+        }
+        return nick;
     }
 }
