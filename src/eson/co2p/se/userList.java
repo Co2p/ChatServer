@@ -20,7 +20,6 @@ public class userList {
         if (first){
             firstRun();
         }
-
         if (!removed.isEmpty()){
             users[removed.remove(0)] = user;
         }
