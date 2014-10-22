@@ -31,7 +31,7 @@ public class RegNameServer {
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        catalogue.setThisServer(myip, 2222);
+        catalogue.setThisServer(myip, 8888);
         byte[] sendData = message.reqisterNS();
         byte[] receiveData = new byte[65507];
         ArrayList<Integer> format = new ArrayList<Integer>();
@@ -67,7 +67,6 @@ public class RegNameServer {
             KeepServerAlive.start();
             System.out.println("Server is now set to keep alive");
         }
-        while(true){;}
     }
     public InetAddress getPublicIp() throws Exception{
         URL whatismyip = new URL("http://checkip.amazonaws.com");

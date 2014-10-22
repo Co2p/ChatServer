@@ -33,6 +33,8 @@ public class server {
     public void ListenForClients(){
         while(true){
             if (!catalogue.GetClientListenerStatus()) {
+                while(!catalogue.setClientListenerStatus(true));
+                System.out.println("creating thread!!!!");
                 final Thread ClientAnswereThread;
                 ClientAnswereThread = new Thread(new Runnable() {
                     @Override
@@ -45,6 +47,7 @@ public class server {
                     }
                 });
                 ClientAnswereThread.start();
+                System.out.println("Starting thread!!!!");
             }
         }
     }

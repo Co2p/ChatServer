@@ -25,7 +25,7 @@ public class Main {
         }
         System.out.println("got here1");
         server StartListen = new server(catalogue.getServerPort());
-
+        while(true){;}
 
 
 

@@ -16,9 +16,11 @@ public class ServerFirstClientThread {
 
     public ServerFirstClientThread(Socket Current_Connection, ServerSocket ClientScan, int Port) throws IOException {
         while(!catalogue.setClientListenerStatus(true)){;}
+        System.out.println("updated lol");
         CurrentConnection = Current_Connection;
         ClientScann = ClientScan;
         port = Port;
+        System.out.println("start scan for clients");
         ScanForClients();
     }
     private void ScanForClients() throws IOException {
@@ -39,6 +41,7 @@ public class ServerFirstClientThread {
 
             int bytesRead = Input.read(messageByte);
             if(bytesRead > 8) {
+                System.out.println("client found! "+ bytesRead);
                 final Thread clientthread;
                 clientthread = new Thread(new Runnable() {
                     @Override
@@ -51,7 +54,9 @@ public class ServerFirstClientThread {
                     }
                 });
                 clientthread.start();
+                System.out.println("pased port to new client! new client thread started");
                 while(!catalogue.setClientListenerStatus(false)){;}
+
                 break;
             }else {
                 try {

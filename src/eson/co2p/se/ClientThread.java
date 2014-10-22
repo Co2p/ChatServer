@@ -15,8 +15,11 @@ public class ClientThread {
     public ClientThread(byte[] messageByte,  Socket CurrentConnection, ServerSocket ClientScann) throws IOException {
         ClientSocket = CurrentConnection;
         ServerSock = ClientScann;
+        System.out.println("clientthread: lollaflefd");
         PDU temp = new PDU(messageByte, messageByte.length);// är detta korekt?
         String Usernamr = checkReg(temp);
+        System.out.println("clientthread pdu: " + temp);
+        System.out.println("clientthread username: " + Usernamr);
         if(!Usernamr.equals(null)){
             outToServer = new PrintStream(ClientSocket.getOutputStream(), true);
             RegSendMessage();
