@@ -38,7 +38,7 @@ public class ServerFirstClientThread {
                 e.printStackTrace();
             }
             try {
-                OutputStream out = (CurrentConnection.getOutputStream());
+                out = (CurrentConnection.getOutputStream());
             } catch (IOException e) {
                 e.printStackTrace();
             }

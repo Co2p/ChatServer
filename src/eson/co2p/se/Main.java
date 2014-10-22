@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            catalogue.setNameServer(InetAddress.getByName("85.11.41.32"), 1337);
+            catalogue.setNameServer(InetAddress.getByName("itchy.cs.umu.se"), 1337);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

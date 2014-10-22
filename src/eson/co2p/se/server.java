@@ -15,6 +15,8 @@ public class server {
     private ServerSocket ClientScan = null;
     private Socket Current_Connection;
 
+    public server(){}
+
     public server(int Port) throws IOException {
         port = Port;
         try{
