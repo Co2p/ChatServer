@@ -1,6 +1,7 @@
 package eson.co2p.se;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Queue;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Queue;
 public class userList {
     private static ArrayList<User> users = new ArrayList<User>();
     private static ArrayList<Integer> removed = new ArrayList<Integer>();
-    //private static Queue<Integer> removed;
+    private static Hashtable<String, Integer> userhash = new Hashtable<String, Integer>();
     private static boolean first=true;
     private static int Connected = 0;
 
@@ -25,8 +26,8 @@ public class userList {
         }
         if (!removed.isEmpty()){
             Connected++;
-            ID = removed.get(removed.size()-1);
-            removed.remove(removed.size()-1);
+            ID = removed.remove(removed.size() - 1);
+            userhash.put(user.getNickname(), ID);
             user.setID(ID);
             users.set(ID, user);
         }else{
@@ -41,7 +42,9 @@ public class userList {
      */
     //TODO if user disconnects by quitting problem, than user don't get removed the list
     public static void removeUser(int ID){
+        String tempusername = users.get(ID).getNickname();
         users.set(ID, null);
+        userhash.remove(tempusername);
         removed.add(ID);
         Connected--;
     }
@@ -54,6 +57,13 @@ public class userList {
      */
     public static User getUser(int i){
         return users.get(i);
+    }
+
+    public static int getID(String userName) {
+        if (userhash.contains(userName)) {
+            return userhash.get(userName);
+        }
+        return -1;
     }
 
     public static ArrayList<User> getUserList(){
