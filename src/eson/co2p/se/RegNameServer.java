@@ -1,8 +1,11 @@
 package eson.co2p.se;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.util.ArrayList;
+import java.io.*;
 
 /**
  * Retrieves the active servers from the name server
@@ -25,7 +28,10 @@ public class RegNameServer {
         try {
             System.out.println("IP:" + Inet4Address.getLocalHost().getHostAddress());
             myip = InetAddress.getByName(Inet4Address.getLocalHost().getHostAddress());
-        } catch (UnknownHostException e) {
+            if(myip.toString().startsWith("/127")) {
+                myip = getPublicIp();
+            }
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         catalogue.setThisServer(myip, 2222);
@@ -65,5 +71,23 @@ public class RegNameServer {
             System.out.println("Server is now set to keep alive");
         }
         while(true){;}
+    }
+    private InetAddress getPublicIp() throws Exception{
+        URL whatismyip = new URL("http://checkip.amazonaws.com");
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            String ip = in.readLine();
+            return InetAddress.getByName(ip);
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
