@@ -44,4 +44,9 @@ public class User {
     public int getPort(){
         return port;
     }
+
+    public int getID(){
+        return ID;
+    }
+
 }
