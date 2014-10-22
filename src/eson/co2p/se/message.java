@@ -68,6 +68,7 @@ public class message {
         rawdata.setByte(0, (byte)OpCodes.NICKS);
         System.out.println("Hur många den tror är connectade: " + connected);
         rawdata.setByte(1, (byte)connected);
+        int totSize = 0;
         try {
             for(User s:users){
                 if(s != null) {
@@ -77,8 +78,11 @@ public class message {
                     System.out.println("CurrentSize = " + currentSize + ", nickLength = " + nickLength);
                     rawdata.setSubrange(currentSize, (s.getNickname() + "\0").getBytes("UTF-8"));
                     System.out.println("NICK: " + s.getNickname());
+                    totSize += nickLength + 1;
                 }
             }
+            //Insert length of all usernames
+            rawdata.setShort(2, (short)totSize);
             /*
             for (int i = 0; i < connected; i++) {
                 int currentSize = rawdata.length();
