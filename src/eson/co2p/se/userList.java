@@ -22,7 +22,7 @@ public class userList {
         if (!removed.isEmpty()){
             users.set(removed.remove(0), user);
         }else{
-            if(users.size() > 255) {
+            if(users.size() < 255) {
                 users.add(user);
             }
         }
