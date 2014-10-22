@@ -16,7 +16,7 @@ public class User {
     }
 
     public void setNickname(String nickname){
-        this.nickname = nickname;
+        this.nickname = nickname.replaceAll("\0", "");
     }
 
     public void setIp(InetAddress ip){

@@ -77,10 +77,9 @@ public class message {
                     System.out.println("CurrentSize = " + currentSize + ", nickLength = " + nickLength);
                     rawdata.setSubrange(currentSize, (s.getNickname() + "\0").getBytes("UTF-8"));
                     System.out.println("NICK: " + s.getNickname());
-
                 }
             }
-/*
+            /*
             for (int i = 0; i < connected; i++) {
                 int currentSize = rawdata.length();
                 int nickLength = catalogue.getClient(i).getNickname().getBytes().length;
