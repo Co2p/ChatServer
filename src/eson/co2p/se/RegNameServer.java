@@ -26,9 +26,8 @@ public class RegNameServer {
         //InetAddress adr = new InetAddress(InetAddress.getLoopbackAddress());
         InetAddress myip = null;
         try {
-            System.out.println("IP:" + Inet4Address.getLocalHost().getHostAddress());
-            //myip = InetAddress.getByName(Inet4Address.getLocalHost().getHostAddress());
             myip = getPublicIp();
+            System.out.println("IP: " + myip);
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
