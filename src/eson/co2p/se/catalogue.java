@@ -14,6 +14,7 @@ public class catalogue {
     private static String name;
     private static server nameServer = new server();
     private static server thisServer = new server();
+    private static int idTop = 0;
 
     catalogue(){}
 
@@ -140,6 +141,10 @@ public class catalogue {
      */
     public static int getServerPort(){
         return thisServer.getPort();
+    }
+
+    public static int getId(){
+        return idTop++;
     }
 
 }
