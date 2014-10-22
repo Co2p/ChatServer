@@ -27,10 +27,8 @@ public class RegNameServer {
         InetAddress myip = null;
         try {
             System.out.println("IP:" + Inet4Address.getLocalHost().getHostAddress());
-            myip = InetAddress.getByName(Inet4Address.getLocalHost().getHostAddress());
-            if(myip.toString().startsWith("/127")) {
-                myip = getPublicIp();
-            }
+            //myip = InetAddress.getByName(Inet4Address.getLocalHost().getHostAddress());
+            myip = getPublicIp();
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
