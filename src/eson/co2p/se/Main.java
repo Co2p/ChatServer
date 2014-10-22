@@ -22,8 +22,6 @@ public class Main {
             RegServer.regserver();
         } catch (SocketException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
         /*

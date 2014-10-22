@@ -1,6 +1,8 @@
 package eson.co2p.se;
-
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.InetAddress;
+import java.net.Socket;
 
 /**
  * Created by gordon on 15/10/14.
@@ -10,9 +12,38 @@ public class server {
     private String name;
     private int port;
     private int connected;
+    private ServerSocket ClientScan = null;
+    private Socket Current_Connection;
 
-    public server(){
+    public server(int Port) throws IOException {
+        port = Port;
+        try{
+            ClientScan = new ServerSocket(port);
+            System.out.println("Socket Created");
+        }
+        catch(Exception e){
+        }
+        ListenForClients();//TODO: en chekerklass som kör denna fler ggr vid behov, avoid ddos...
     }
+
+
+    public void ListenForClients(){
+        while(true){
+            final Thread ClientAnswereThread;
+            ClientAnswereThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        new ServerFirstClientThread(Current_Connection,ClientScan,port);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            ClientAnswereThread.start();
+        }
+    }
+
 
     /**
      * Set the server ip
