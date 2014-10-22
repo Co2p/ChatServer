@@ -16,7 +16,7 @@ public class Main {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        catalogue.setName("Isidors Superbra server som inte funkar");
+        catalogue.setName("Gordons Superbra server som inte funkar");
         RegNameServer RegServer = new RegNameServer();
         try {
             RegServer.regserver();

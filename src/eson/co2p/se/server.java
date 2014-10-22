@@ -11,7 +11,7 @@ public class server {
     private InetAddress ip;
     private String name;
     private int port;
-    private int connected;
+    //private int connected;
     private ServerSocket ClientScan = null;
     private Socket Current_Connection;
 
@@ -76,13 +76,13 @@ public class server {
         this.port = port;
     }
 
-    /**
-     * Set how many clients are connected to the server
-     * @param connected connected clients
-     */
-    public void setConnected(int connected){
-        this.connected = connected;
-    }
+    /*/**
+     ** Set how many clients are connected to the server
+     ** @param connected connected clients
+     *
+      *public void setConnected(int connected){
+      *  this.connected = connected;
+    }*/
 
     /**
      * Returns the server ip
@@ -108,11 +108,11 @@ public class server {
         return this.port;
     }
 
-    /**
-     * Get the number of connected clients to the server
-     * @return connected clients
-     */
-    public int getConnected(){
-        return this.connected;
-    }
+    /*/**
+    * * Get the number of connected clients to the server
+    * * @return connected clients
+    *
+    *public int getConnected(){
+    *return this.connected;
+    }*/
 }
