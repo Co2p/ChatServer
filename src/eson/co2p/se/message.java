@@ -173,9 +173,10 @@ public class message {
      * @return the time in seconds since the 1970'ss
      */
     public static int getTime(){
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
+        /*Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
         calendar.clear();
         calendar.set(2011, Calendar.OCTOBER, 1);
-        return (int)(calendar.getTimeInMillis() / 1000L);
+        return (int)(calendar.getTimeInMillis() / 1000L);*/
+        return (int)(System.currentTimeMillis() / 1000L);
     }
 }
