@@ -69,7 +69,7 @@ public class RegNameServer {
         }
         while(true){;}
     }
-    private InetAddress getPublicIp() throws Exception{
+    public InetAddress getPublicIp() throws Exception{
         URL whatismyip = new URL("http://checkip.amazonaws.com");
         BufferedReader in = null;
         try {

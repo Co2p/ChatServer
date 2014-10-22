@@ -19,6 +19,7 @@ public class server {
 
     public server(int Port) throws IOException {
         port = Port;
+        System.out.println("got here 2");
         try{
             ClientScan = new ServerSocket(port);
             System.out.println("Socket Created");
@@ -31,21 +32,22 @@ public class server {
 
     public void ListenForClients(){
         while(true){
-            final Thread ClientAnswereThread;
-            ClientAnswereThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        new ServerFirstClientThread(Current_Connection,ClientScan,port);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            if (!catalogue.GetClientListenerStatus()) {
+                final Thread ClientAnswereThread;
+                ClientAnswereThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            new ServerFirstClientThread(Current_Connection, ClientScan, port);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
-            ClientAnswereThread.start();
+                });
+                ClientAnswereThread.start();
+            }
         }
     }
-
 
     /**
      * Set the server ip

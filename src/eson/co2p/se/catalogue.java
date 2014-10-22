@@ -11,12 +11,46 @@ public class catalogue {
     private static int idNumber;
     private static boolean keepAlive;
     private static ArrayList<User> clients = new ArrayList<User>();
+    private static String[] ClientMessages = new String[256];
+    private static String[] OldClientMessages = new String[256];
     private static String name;
     private static server nameServer = new server();
     private static server thisServer = new server();
+    private static boolean ClientListenerAlive = false;
+    public static boolean threadSafeChek = true;
     private static int idTop = 0;
 
     catalogue(){}
+
+    public static boolean GetClientListenerStatus (){
+        return ClientListenerAlive;
+    }
+    public static boolean setClientListenerStatus (boolean status){
+        if (threadSafeChek){
+            threadSafeChek = false;
+            ClientListenerAlive = status;
+            threadSafeChek = true;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    public static String GetMessage(int Index){
+        String Mess = null;
+        if (ClientMessages[Index].length() > 1) {
+            Mess = ClientMessages[Index];
+        }
+        return Mess;
+    }
+
+    public static void SetMessage(int Index, String mess){
+        OldClientMessages[Index] = ClientMessages[Index];
+        ClientMessages[Index] = mess;
+
+    }
 
     public static void setThisServer(InetAddress ip, int port){
         thisServer.setIp(ip);

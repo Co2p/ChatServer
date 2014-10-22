@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         try {
             catalogue.setNameServer(InetAddress.getByName("itchy.cs.umu.se"), 1337);
         } catch (UnknownHostException e) {
@@ -23,6 +23,15 @@ public class Main {
         } catch (SocketException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        System.out.println("got here1");
+        server StartListen = new server(catalogue.getServerPort());
+
+
+
+
+
+
+
 
         /*
         catalogue.setName("Glorious Chat");
