@@ -14,6 +14,17 @@ public class userList {
     private static Hashtable<String, Integer> userhash = new Hashtable<String, Integer>();
     private static boolean first=true;
     private static int Connected = 0;
+    private static String LastUser = null;
+
+
+
+    public static String GetLastUser(){
+        return LastUser;
+    }
+    public static void setLastUser(String Name){
+        LastUser = Name;
+    }
+
 
     /**
      * Adds a user to the array of active users

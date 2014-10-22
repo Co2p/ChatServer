@@ -37,7 +37,7 @@ public class KeepAlive {
             try {
                 System.out.print("now sleeping\n");
                 Thread.sleep(2400);
-                System.out.print("sleept\n");
+                //System.out.print("sleept whit isidor");
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }

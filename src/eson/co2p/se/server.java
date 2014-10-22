@@ -28,15 +28,15 @@ public class server {
             //every time an connection is made, start an new clientthread.
 
             while (nrofconnections < maxconnections) {
-                System.out.print("Listening for clients..");
+                System.out.print("Listening for clients..\n");
                 Socket ListeningSocket = serverSocket.accept();
-                System.out.print("making thread");
+                System.out.print("making thread\n");
                 Thread ClientThread = new Thread(new ClientThread(ListeningSocket));
 
                 catalogue.addThread(ClientThread);
-                System.out.print("Starting thread");
+                System.out.print("Starting thread\n");
                 ClientThread.start();
-                System.out.print("thread started!");
+                System.out.print("thread started!\n");
             }
 
         } catch (IOException exp) {
