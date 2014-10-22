@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author gordon on 22/10/14.
  */
 public class userList {
-    private static User[] users = new User[255];
+    private static ArrayList<User> users;
     private static ArrayList<Integer> removed;
     private static boolean first=true;
 
@@ -20,7 +20,11 @@ public class userList {
             firstRun();
         }
         if (!removed.isEmpty()){
-            users[removed.remove(0)] = user;
+            users.set(removed.remove(0), user);
+        }else{
+            if(users.size() > 255) {
+                users.add(user);
+            }
         }
     }
 
@@ -29,7 +33,7 @@ public class userList {
      * @param i user index
      */
     public static void removeUser(int i){
-        users[i] = null;
+        users.set(i, null);
         removed.add(0);
     }
 
@@ -40,7 +44,7 @@ public class userList {
      * @see eson.co2p.se.User
      */
     public static User getUser(int i){
-        return users[i];
+        return users.get(i);
     }
 
     /**
