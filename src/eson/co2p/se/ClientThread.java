@@ -21,12 +21,15 @@ public class ClientThread {
         System.out.println("clientthread pdu: " + temp);
         System.out.println("clientthread username: " + Usernamr);
         if(!Usernamr.equals(null)){
+            System.out.println("try to send answere....");
             outToServer = new PrintStream(ClientSocket.getOutputStream(), true);
+            System.out.println("printstream redy...");
             RegSendMessage();
         }
     }
     private void RegSendMessage(){
         try {
+            System.out.println("writing to server");
             outToServer.write(message.nickNames());
         } catch (IOException e) {
             e.printStackTrace();
