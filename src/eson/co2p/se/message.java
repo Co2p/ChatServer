@@ -100,15 +100,15 @@ public class message {
         return rawdata.getBytes();
     }
 
-    public static byte[] userJoined(User user){
+    public static byte[] userJoined(String nickname){
         PDU rawdata = null;
         try {
-            int nickLength = user.getNickname().getBytes("UTF-8").length;
+            int nickLength = nickname.getBytes("UTF-8").length;
             rawdata = new PDU(8 + div4(nickLength));
             rawdata.setByte(0, (byte) OpCodes.UJOIN);
             rawdata.setByte(1, (byte) nickLength);
             rawdata.setInt(4, getTime());
-            rawdata.setSubrange(8, user.getNickname().getBytes("UTF-8"));
+            rawdata.setSubrange(8, nickname.getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
             e.printStackTrace();
         }
