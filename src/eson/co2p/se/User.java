@@ -11,10 +11,8 @@ public class User {
     int port;
     int ID;
 
-    public User(String nickname, InetAddress ip, int port){
+    public User(String nickname){
         setNickname(nickname);
-        setIp(ip);
-        setPort(port);
     }
 
     public void setNickname(String nickname){
