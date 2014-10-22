@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 /**
- * Created by gordon on 22/10/14.
+ * Stores users, has a upper limit of 255 at any given time
+ * @author gordon on 22/10/14.
  */
 public class userList {
     private static User[] users = new User[255];
     private static ArrayList<Integer> removed;
-    private static boolean first;
+    private static boolean first=true;
 
     public static void addUser(User user){
         if (first){
@@ -36,6 +37,7 @@ public class userList {
             removed.add(i);
             i--;
         }
+        first=false;
     }
 
 }
