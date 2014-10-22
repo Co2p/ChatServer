@@ -63,11 +63,11 @@ public class message {
     //#==============================================#
     public static byte[] nickNames(){
         ArrayList<User> users= userList.getUserList();
-        int connected = users.size();
+        int connected = userList.getConnected();
         PDU rawdata = new PDU(4);
         rawdata.setByte(0, (byte)OpCodes.NICKS);
-        System.out.println("Hur många den tror är connectade: " + userList.getConnected());
-        rawdata.setByte(1, (byte)userList.getConnected());
+        System.out.println("Hur många den tror är connectade: " + connected);
+        rawdata.setByte(1, (byte)connected);
         try {
             for(User s:users){
                 if(s != null) {
