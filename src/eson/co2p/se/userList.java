@@ -52,6 +52,14 @@ public class userList {
         return users.get(i);
     }
 
+    public static ArrayList<User> getUserList(){
+        return users;
+    }
+
+    public static int getConnected(){
+        return users.size();
+    }
+
     /**
      * Runs the first time a user is added, adds 254-0 to the arraylist so the user can be added
      */
