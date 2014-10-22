@@ -12,6 +12,7 @@ import java.net.Socket;
 public class ClientThread implements Runnable {
 
     private Socket passedSocket;
+
     private PrintStream outToServer;
     public DataInputStream Recived_Data;
 
