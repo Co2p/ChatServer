@@ -12,6 +12,7 @@ import java.net.Socket;
 public class ClientThread implements Runnable {
 
     private Socket passedSocket;
+    private int ThreadUserId;
 
     private PrintStream outToServer;
     public DataInputStream Recived_Data;
@@ -23,12 +24,16 @@ public class ClientThread implements Runnable {
         System.out.print("made inputs/outputs ant socket..");
     }
 
+
     @Override
     public void run() {
 
         byte[] messageByte = new byte[1000];
+
         System.out.print("reading data");
+
         int bytesRead = 0;
+
         try {
             bytesRead = Recived_Data.read(messageByte);
         } catch (IOException e) { e.printStackTrace();}
@@ -36,12 +41,11 @@ public class ClientThread implements Runnable {
         if(bytesRead > 8) {
             PDU temp = new PDU(messageByte, messageByte.length);
             String Usernamr = checkReg(temp);
-            User user = createUser(Usernamr);
-
-            userList.addUser(user);
 
             System.out.println("Username: " + Usernamr);
             if(Usernamr != null){
+                User user = createUser(Usernamr);
+                ThreadUserId = userList.addUser(user);
                 try {
                     outToServer.write(message.nickNames());
                     System.out.print("Sent accept!");
