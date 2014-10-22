@@ -21,9 +21,7 @@ public class server {
 
         //TODO FIX client counter...
         int nrofconnections = 0;
-        int maxconnections = 1000;
-
-        ArrayList<Thread> Threads = new ArrayList<Thread>();
+        int maxconnections = 256;
 
         try {
             serverSocket = new ServerSocket(port);
@@ -35,7 +33,7 @@ public class server {
                 System.out.print("making thread");
                 Thread ClientThread = new Thread(new ClientThread(ListeningSocket));
 
-                Threads.add(ClientThread);
+                catalogue.addThread(ClientThread);
                 System.out.print("Starting thread");
                 ClientThread.start();
                 System.out.print("thread started!");

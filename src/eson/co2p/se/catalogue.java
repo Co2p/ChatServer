@@ -20,7 +20,14 @@ public class catalogue {
     public static boolean threadSafeChek = true;
     private static int idTop = 0;
 
+    static ArrayList<Thread> Threads = new ArrayList<Thread>();
+
     catalogue(){}
+
+    public static void addThread(Thread athread){
+        Threads.add(athread);
+    }
+
 
     public static boolean GetClientListenerStatus (){
         return ClientListenerAlive;
