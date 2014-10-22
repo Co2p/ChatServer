@@ -152,7 +152,7 @@ public class message {
     /**
      * getTime returns the time in seconds since the 1970's
      *
-     * @return the time in seconds since the 1970's
+     * @return the time in seconds since the 1970'ss
      */
     public static int getTime(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
