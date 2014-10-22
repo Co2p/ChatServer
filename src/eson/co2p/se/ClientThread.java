@@ -12,7 +12,7 @@ import java.net.Socket;
 public class ClientThread implements Runnable {
 
     private Socket passedSocket;
-    private int ThreadUserId;
+    private Integer ThreadUserId;
 
     private PrintStream outToServer;
     public DataInputStream Recived_Data;
@@ -43,13 +43,17 @@ public class ClientThread implements Runnable {
             String Usernamr = checkReg(temp);
 
             System.out.println("Username: " + Usernamr);
-            if(Usernamr != null){
+            if(Usernamr.equals(null)){
                 User user = createUser(Usernamr);
                 ThreadUserId = userList.addUser(user);
-                try {
-                    outToServer.write(message.nickNames());
-                    System.out.print("Sent accept!");
-                } catch (IOException e) {e.printStackTrace();}
+                if(ThreadUserId.equals(null)){
+                    try {
+                        outToServer.write(message.nickNames());
+                        System.out.print("Sent accept!");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }else{
             try {
