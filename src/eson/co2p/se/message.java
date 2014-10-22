@@ -67,11 +67,13 @@ public class message {
         rawdata.setByte(0, (byte)OpCodes.NICKS);
         rawdata.setByte(1, (byte)connected);
         try {
-            for (int i = 0; i < connected; i++) {
-                int currentSize = rawdata.length();
-                int nickLength = catalogue.getClient(i).getNickname().getBytes().length;
-                rawdata.extendTo(currentSize + nickLength + 1);
-                rawdata.setSubrange(currentSize, (catalogue.getClient(i).getNickname() + "\0").getBytes("UTF-8"));
+            for (int i = 0; i < 254; i++) {
+                if(userList.getUser(i) != null) {
+                    int currentSize = rawdata.length();
+                    int nickLength = userList.getUser(i).getNickname().getBytes().length;
+                    rawdata.extendTo(currentSize + nickLength + 1);
+                    rawdata.setSubrange(currentSize, (userList.getUser(i).getNickname() + "\0").getBytes("UTF-8"));
+                }
             }
         }catch(UnsupportedEncodingException e){
             e.printStackTrace();
