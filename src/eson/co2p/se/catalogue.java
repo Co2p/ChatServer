@@ -4,7 +4,8 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
- * Created by gordon on 15/10/14.
+ * Saves states and information about the server
+ * @author gordon on 15/10/14.
  */
 public class catalogue {
 
