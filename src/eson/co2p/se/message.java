@@ -70,7 +70,7 @@ public class message {
         try {
             for(User s:users){
                 if(s != null) {
-                    int currentSize = rawdata.length();
+                    int currentSize = rawdata.length() - 1;
                     int nickLength = s.getNickname().getBytes().length;
                     rawdata.extendTo(nickLength + 1);
                     rawdata.setSubrange(currentSize, (s.getNickname() + "\0").getBytes("UTF-8"));
