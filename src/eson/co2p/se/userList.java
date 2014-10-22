@@ -67,6 +67,7 @@ public class userList {
     private static void firstRun(){
         for(int i = 0; i < 255; i++){
             removed.add(i);
+            users.add(null);
         }
         first=false;
     }
