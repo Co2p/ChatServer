@@ -9,8 +9,8 @@ import java.util.Queue;
  */
 public class userList {
     private static ArrayList<User> users = new ArrayList<User>();
-    //private static ArrayList<Integer> removed;
-    private static Queue<Integer> removed;
+    private static ArrayList<Integer> removed;
+    //private static Queue<Integer> removed;
     private static boolean first=true;
 
     /**
@@ -23,7 +23,8 @@ public class userList {
             firstRun();
         }
         if (!removed.isEmpty()){
-            ID = removed.remove();
+            ID = removed.get(removed.size()-1);
+            removed.remove(removed.size()-1);
             user.setID(ID);
             users.set(ID, user);
         }else{
