@@ -15,6 +15,9 @@ public class ClientThread implements Runnable {
     private Integer ThreadUserId;
 
     private String LastUser = "";
+    private String MyName = "";
+
+    private boolean FirstRun = true;
 
     private PrintStream outToServer;
     public DataInputStream Recived_Data;
@@ -28,8 +31,12 @@ public class ClientThread implements Runnable {
 
 
     public boolean NewUserChek(){
-        if (!userList.GetLastUser().equals(LastUser)){
+        if (!userList.GetLastUser().equals(LastUser) && !userList.GetLastUser().equals(MyName)){
             LastUser = userList.GetLastUser();
+            if(FirstRun){
+                FirstRun = false;
+                return false;
+            }
             return true;
         }
         else{
@@ -60,6 +67,7 @@ public class ClientThread implements Runnable {
                     String Usernamr = checkReg(temp);
                     System.out.println("Username: " + Usernamr + "\n");
                     if (!Usernamr.equals(null)) {
+                        MyName = Usernamr;
                         User user = createUser(Usernamr);
                         ThreadUserId = userList.addUser(user);
                         if (!ThreadUserId.equals(null)) {//om medelandet är ett Join
