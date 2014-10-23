@@ -14,7 +14,6 @@ public class nameServerConnection {
     private ArrayList<Integer> format = new ArrayList<Integer>();
     private ArrayList<Object> content = new ArrayList<Object>();
     byte[] outputStream;
-
     public nameServerConnection(){
         while (catalogue.keepAlive()){
             try {
