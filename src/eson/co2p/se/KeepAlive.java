@@ -22,8 +22,8 @@ public class KeepAlive {
     private void KeepServerAlive() throws SocketException {
         DatagramSocket clientSocket = new DatagramSocket();
         while(true){
-            InetAddress myip = null;
-            catalogue.setThisServer(myip, 2222);
+            //InetAddress myip = null;
+            //catalogue.setThisServer(myip, 2222);
             byte[] sendData = message.keepAlive();
             try {
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
@@ -35,7 +35,6 @@ public class KeepAlive {
             try {
                 System.out.print("now sleeping\n");
                 Thread.sleep(2400);
-                //System.out.print("sleept whit isidor");
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
