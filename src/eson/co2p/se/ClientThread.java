@@ -7,7 +7,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
 /**
- * Created by Tony on 22/10/2014.
+ * Handles the main threads of the program
+ * //TODO explain more thorough
+ * @author Tony Isidor and Gordon on 22/10/2014.
  */
 public class ClientThread implements Runnable {
 
