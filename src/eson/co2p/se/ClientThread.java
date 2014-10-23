@@ -14,8 +14,8 @@ public class ClientThread implements Runnable {
     private Socket passedSocket;
     private Integer ThreadUserId;
 
-    private String LastUser = "";
-    private String MyName = "";
+    private String LastUser = "default";
+    private String MyName = "default";
 
     private boolean FirstRun = true;
 
@@ -24,6 +24,7 @@ public class ClientThread implements Runnable {
 
     public ClientThread(Socket gotensocked) throws IOException {
         this.passedSocket = gotensocked;
+        this.passedSocket.setSoTimeout(100);
         Recived_Data = new DataInputStream(this.passedSocket.getInputStream());
         outToServer = new PrintStream(this.passedSocket.getOutputStream(), true);
         System.out.print("made inputs/outputs ant socket..");
@@ -31,17 +32,19 @@ public class ClientThread implements Runnable {
 
 
     public boolean NewUserChek(){
-        if (!userList.GetLastUser().equals(LastUser) && !userList.GetLastUser().equals(MyName)){
-            LastUser = userList.GetLastUser();
-            if(FirstRun){
-                FirstRun = false;
-                return false;
-            }
-            return true;
-        }
-        else{
+        if(FirstRun){
+            FirstRun = false;
             return false;
         }
+        if(userList.GetLastUser().equals(MyName) || userList.GetLastUser().equals(LastUser)){
+            return false;
+        }
+        else{
+            LastUser = userList.GetLastUser();
+            return true;
+        }
+
+
     }
     @Override
     public void run() {
@@ -58,9 +61,7 @@ public class ClientThread implements Runnable {
 
                 try {
                     bytesRead = Recived_Data.read(messageByte);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception e) {;}
                 System.out.print("............");
                 if (bytesRead > 8) {
                     PDU temp = new PDU(messageByte, messageByte.length);
@@ -73,7 +74,8 @@ public class ClientThread implements Runnable {
                         if (!ThreadUserId.equals(null)) {//om medelandet är ett Join
                             try {
                                 outToServer.write(message.nickNames());
-                                userList.setLastUser(Usernamr);
+                                userList.setLastUser(MyName);
+                                LastUser = userList.GetLastUser();
                                 System.out.print("Sent accept!\n");
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -82,14 +84,16 @@ public class ClientThread implements Runnable {
                     }
                 } else {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         System.out.println("not able to sleep: " + e);
                     }
                 }
             }else{
                 try {
+                    System.out.println("Sending Ujoind! user: "+ userList.GetLastUser());
                     outToServer.write(message.userJoined(LastUser));
+                    LastUser = userList.GetLastUser();
                 } catch (IOException e) {e.printStackTrace();}
             }
             //do shit, shits done!
