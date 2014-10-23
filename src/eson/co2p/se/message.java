@@ -70,22 +70,28 @@ public class message {
      * @param ID  the ID of the client sending the message
      * @return  new message with added nickname and timebytesd
      */
-    public static byte[] reMessage(byte[] message, int ID){
+    public static byte[] reMessage(byte[] message, int ID) {
         PDU rawdata = new PDU(message, message.length);
         int checkSum = rawdata.getByte(3);
-        String nickname = userList.getUser(ID).getNickname();
+        if (ID != -1) {
+            String nickname = userList.getUser(ID).getNickname();
 
-        //if(checkSum != rawdata.getBytes())
-        rawdata.setByte(2, (byte)nickname.length());
-        rawdata.setInt(8, getTime());
-        int length = rawdata.length();
-        rawdata.extendTo(length + div4(nickname.length()));
-        try {
-            rawdata.setSubrange(length, nickname.getBytes("UTF-8"));
-        }catch(Exception e){
-            e.printStackTrace();
+            if (checkSum != Checksum.calc(rawdata.getBytes(), rawdata.getBytes().length)) {
+                System.out.println("Checksum calculation returned wrong checksum");
+            } else {
+                rawdata.setByte(2, (byte) nickname.length());
+                rawdata.setInt(8, getTime());
+                int length = rawdata.length();
+                rawdata.extendTo(length + div4(nickname.length()));
+                try {
+                    rawdata.setSubrange(length, nickname.getBytes("UTF-8"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return rawdata.getBytes();
+            }
         }
-        return rawdata.getBytes();
+        return null;
     }
 
     public static byte[] nickNames(){
