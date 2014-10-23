@@ -62,6 +62,11 @@ public class message {
     //#       Messages sent to clients by server     #
     //#==============================================#
 
+    public static int getOp(byte[] data){
+        PDU rawData = new PDU(data, data.length);
+        return rawData.getByte(0);
+    }
+
     /**
      * reMessage takes a message from a client and adds a nickname and
      * time of sending out
