@@ -5,12 +5,15 @@ import java.util.ArrayList;
 
 /**
  * Includes all messages sent from the the chatserver to the nameserver and clients
- * @author isidor on 2014-10-15
+ * @author Isidor, Tony and Gordon on 2014-10-15
  */
 public class message {
-
+    //#==============================================#
+    //#                Below is all                  #
+    //#  Messages sent to nameServer by the server   #
+    //#==============================================#
     /**
-     * creates a message to be sent to a server asking for connection
+     * creates a message to be sent to a server asking for a connection
      *
      * @return  the created pdu with headers.
      */
@@ -32,6 +35,11 @@ public class message {
         return rawdata.getBytes();
     }
 
+    /**
+     * Creates a keepAlive message to the nameserver
+     *
+     * @return the created message
+     */
     public static byte[] keepAlive(){
         PDU rawdata = new PDU(4);
         rawdata.setByte(0,(byte)OpCodes.ALIVE);
@@ -40,10 +48,20 @@ public class message {
 
         return rawdata.getBytes();
     }
-
+    //#==============================================#
+    //#      Below is just some functions Used       #
+    //#   by all other functions across this method  #
+    //#==============================================#
+    /**
+     *  Checks if the message received by the server is a registration message
+     *  Sent by the client
+     *
+     * @param message   the message that's going to be checked
+     * @return  true if reg-message, otherwise false
+     */
     public static boolean checkRegConf(byte[] message){
         PDU rawdata = new PDU(message, message.length);
-        if(rawdata.getByte(0) == OpCodes.ACK){
+        if(getOp(message) == OpCodes.ACK){
             catalogue.setIdNumber(rawdata.getShort(2));
             System.out.println("ID: '" + catalogue.getIdNumber() + "'" );
             return true;
@@ -52,16 +70,44 @@ public class message {
             return false;
         }
     }
-    //#==============================================#
-    //#                Below is all                  #
-    //#       Messages sent to clients by server     #
-    //#==============================================#
-
+    /**
+     * Gets the op of a given message retrieved by the server
+     *
+     * @param data the message retrieved by the server
+     * @return  the op-code of the message
+     */
     public static int getOp(byte[] data){
         PDU rawData = new PDU(data, data.length);
         return rawData.getByte(0);
     }
 
+    /**
+     * div4 tests if and int is divisible by four, if it isn't return the
+     * rounded up number to ciel that's divisible by four.
+     *
+     * @param testInt the int to be tested if it is modulus 4
+     * @return the int that's tested plus ciel modulus 4 of that int
+     */
+    public static int div4(int testInt){
+        int ret = 0;
+        if((testInt % 4) != 0){
+            ret = (4 -(testInt % 4));
+        }
+        return testInt + ret;
+    }
+
+    /**
+     * getTime returns the time in seconds since the 1970's
+     *
+     * @return the time in seconds since the 1970's
+     */
+    public static int getTime(){
+        return (int)(System.currentTimeMillis() / 1000L);
+    }
+    //#==============================================#
+    //#                Below is all                  #
+    //#       Messages sent to clients by server     #
+    //#==============================================#
     /**
      * reMessage takes a message from a client and adds a nickname and
      * time of sending out
@@ -219,29 +265,5 @@ public class message {
             e.printStackTrace();
         }
         return rawdata.getBytes();
-    }
-
-    /**
-     * div4 tests if and int is divisible by four, if it isn't return the
-     * rounded up number to ciel that's divisible by four.
-     *
-     * @param testInt the int to be tested if it is modulus 4
-     * @return the int that's tested plus ciel modulus 4 of that int
-     */
-    public static int div4(int testInt){
-        int ret = 0;
-        if((testInt % 4) != 0){
-            ret = (4 -(testInt % 4));
-        }
-        return testInt + ret;
-    }
-
-    /**
-     * getTime returns the time in seconds since the 1970's
-     *
-     * @return the time in seconds since the 1970's
-     */
-    public static int getTime(){
-        return (int)(System.currentTimeMillis() / 1000L);
     }
 }
