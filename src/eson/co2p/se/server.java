@@ -5,7 +5,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * Created by gordon on 15/10/14.
+ * Main method for the server, handles setting the connection of the name-server
+ * and handling the threads of connected users
+ * @author Tony, isidor and gordon on 15/10/14.
  */
 public class server {
 
