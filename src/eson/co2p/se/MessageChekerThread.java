@@ -27,8 +27,9 @@ public class MessageChekerThread implements Runnable {
     @Override
     public void run() {
         while(true){
-            ArrayList<byte[]> CurrentList = catalogue.GetMessageList();
-            ArrayList<Integer> CurrentListId = catalogue.GetMessageListID();
+            //List<Integer> newList = new ArrayList<Integer>(oldList);
+            ArrayList<byte[]> CurrentList =  new ArrayList<byte[]>(catalogue.GetMessageList());
+            ArrayList<Integer> CurrentListId = new ArrayList<Integer>(catalogue.GetMessageListID());
             int g = 0;
             for(byte[] by : CurrentList) {
                 if (by.equals(OldMessages.get(g)) && CurrentListId.get(g).equals(OldMessagesIDs)){
@@ -36,17 +37,23 @@ public class MessageChekerThread implements Runnable {
                 }
                 else{
                     ArrayList<Object> Obj = new ArrayList<Object>();
-                    Obj.add(CurrentList.get(g));
+
+                    OldMessages.set(g , CurrentList.get(g));
+                    OldMessagesIDs.set(g , CurrentListId.get(g));
+
+                    Obj.add(by);
                     Obj.add(CurrentListId.get(g));
                     catalogue.AddToLastMessage(Obj);
+                    //System.out.println("found new message!"+ by.toString() +"\n ");
                     //found new message, making an object and adding it to the quoe
                 }
                 g ++;
-                try {
-                    Thread.sleep(25);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+
+            }
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
 
         }

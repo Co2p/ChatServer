@@ -17,7 +17,6 @@ public class ClientThread implements Runnable {
     private Socket passedSocket;
     private Integer ThreadUserId;
 
-    ArrayList<byte[]> Messagestosend = new ArrayList<byte[]>();
 
     private String LastUser = "default";
     private String MyName = "default";
@@ -35,8 +34,9 @@ public class ClientThread implements Runnable {
         outToServer = new PrintStream(this.passedSocket.getOutputStream(), true);
         System.out.print("made inputs/outputs ant socket..");
     }
-    private int ChekMessages(){
-        ArrayList<ArrayList> Messages = catalogue.GetMessageQuoe();
+    private ArrayList<byte[]> ChekMessages(){
+        ArrayList<ArrayList> Messages = new ArrayList<ArrayList>(catalogue.GetMessageQuoe());
+        ArrayList<byte[]> Messagestosend = new ArrayList<byte[]>();
         int FoundMessages = 0;
         int mplus = 0;
         for(ArrayList<Object> M :Messages){
@@ -55,7 +55,7 @@ public class ClientThread implements Runnable {
             }
             mplus ++;
         }
-        return FoundMessages;
+        return Messagestosend;
     }
 
 
@@ -77,6 +77,8 @@ public class ClientThread implements Runnable {
     @Override
     public void run() {
 
+
+
         while(true) {//TODO this is sh1t, can't stop, fix it later
 
             byte[] messageByte = new byte[1000];
@@ -85,27 +87,41 @@ public class ClientThread implements Runnable {
 
             int bytesRead = 0;
 
+
             if(!NewUserChek()) {
-                int Messagesleft = ChekMessages();
-                if (Messagesleft >= 1){
+                ArrayList<byte[]> Messagesleft = ChekMessages();
+                System.out.println("Values: " +Messagesleft.size()+" empty?: "+ Messagesleft.isEmpty());
+                if (!Messagesleft.isEmpty()){
+                    System.out.print("messages left: " + Messagesleft + "\n");
                     int inde = 0;
-                    for(byte[] sendbyte :Messagestosend){
+                    ArrayList<byte[]> Messagestosend_copy = new ArrayList<byte[]>(Messagesleft);
+                    ArrayList<Integer> removelist = new ArrayList<Integer>();
+                    for(byte[] sendbyte :Messagesleft){
                         try {
                             outToServer.write(sendbyte);
+                            System.out.println("Sent message!");
                         } catch (IOException e) {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }
-                        Messagestosend.remove(inde);
+                        removelist.add(inde);
+
                         inde ++;
                     }
+                    for(int j = 0; j < removelist.size(); j++){
+                        Messagestosend_copy.remove(removelist.get(j));
+                    }
                 }
+
+
                 try {
                     bytesRead = Recived_Data.read(messageByte);
                 } catch (Exception e) {;}
                 System.out.print("............\n");
                 if (bytesRead > 8) {
+                    System.out.print("getting  op\n");
                     int Opcode = message.getOp(messageByte);
-                    if(Opcode == OpCodes.REG){
+                    System.out.print("op is:" + Opcode + "\n");
+                    if(Opcode == OpCodes.JOIN){
                         PDU temp = new PDU(messageByte, messageByte.length);
                         String Usernamr = checkReg(temp);
                         System.out.println("Username: " + Usernamr + "\n");
@@ -126,7 +142,9 @@ public class ClientThread implements Runnable {
                         }
                     } else if(Opcode == OpCodes.MESSAGE){
                         byte[] BS = message.reMessage(messageByte, ThreadUserId);
+                        System.out.println("Handeling op code 10 \n ");
                         catalogue.setMessage(ThreadUserId,BS);
+
                     }
                     } else {
                         try {

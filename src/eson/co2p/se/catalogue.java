@@ -45,6 +45,7 @@ public class catalogue {
     }
     public static int UpdateMessageId(){
         Message_ID ++;
+        System.out.println("updating id \n ");
         return Message_ID;
     }
     public static ArrayList<byte[]> GetMessageList(){
@@ -58,8 +59,10 @@ public class catalogue {
         //TODO: is this safe?
         //TODO:FUUUUCK!
         if(fillmessagelist()){
+            System.out.println("setting client message and id\n ");
             ClientMessages.set(Index ,message);
             ClientMessagesID.set(Index ,UpdateMessageId());
+            System.out.println("done updating id's\n ");
         }
     }
     private static boolean fillmessagelist(){
