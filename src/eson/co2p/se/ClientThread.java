@@ -85,6 +85,7 @@ public class ClientThread implements Runnable {
             byte[] messageByteNew;
             //System.out.print("reading data");
 
+
             int bytesRead = 0;
 
             if(!NewUserChek()) {
