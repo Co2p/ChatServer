@@ -58,6 +58,7 @@ public class ClientThread implements Runnable {
         return FoundMessages;
     }
 
+
     public boolean NewUserChek(){
         if(FirstRun){
             FirstRun = false;
