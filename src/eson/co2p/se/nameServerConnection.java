@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Sends Alive messages to the nameserver.
  */
 public class nameServerConnection {
-
+    //TODO is this method/class ever used/needed?
     private ArrayList<Integer> format = new ArrayList<Integer>();
     private ArrayList<Object> content = new ArrayList<Object>();
     byte[] outputStream;
