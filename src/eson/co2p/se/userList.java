@@ -108,7 +108,6 @@ public class userList {
      * Runs the first time a user is added, adds 0 -> 254 the arraylist so the user can be added
      */
     private static void firstRun(){
-        for(int i = 0; i < 255; i++){
         for(int i = 254; i < 0; i--){
             removed.add(i);
             users.add(null);
