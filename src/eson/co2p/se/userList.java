@@ -16,15 +16,21 @@ public class userList {
     private static String LastUser = "default";
 
 
-
+    /**
+     * returns the latest connected user to the server
+     * @return  the latest connected user
+     */
     public static String GetLastUser(){
         return LastUser;
     }
+
+    /**
+     * sets the latest user connected to the server (used by UJOIN)
+     * @param Name  Nickname of the latest connected user
+     */
     public static void setLastUser(String Name){
         LastUser = Name;
     }
-
-
     /**
      * Adds a user to the array of active users
      * @param user the user to be added
@@ -69,6 +75,11 @@ public class userList {
         return users.get(i);
     }
 
+    /**
+     * returns the id-number of a username
+     * @param userName  the username to check
+     * @return  the id of the username
+     */
     public static int getID(String userName) {
         if (userhash.contains(userName)) {
             return userhash.get(userName);
@@ -76,19 +87,27 @@ public class userList {
         return -1;
     }
 
+    /**
+     *  returns a list containing all connected users as object "User"
+     * @return userlist containing all users connected
+     */
     public static ArrayList<User> getUserList(){
         return users;
     }
 
+    /**
+     * returns the number of connected users on the server
+     * @return  number of connected users
+     */
     public static int getConnected(){
         return Connected;
     }
 
     /**
-     * Runs the first time a user is added, adds 254-0 to the arraylist so the user can be added
+     * Runs the first time a user is added, adds 0 -> 254 the arraylist so the user can be added
      */
     private static void firstRun(){
-        for(int i = 0; i < 254; i++){
+        for(int i = 0; i < 255; i++){
             removed.add(i);
             users.add(null);
         }
