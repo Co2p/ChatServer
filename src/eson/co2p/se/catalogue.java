@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Saves states and information about the server
- * @author gordon on 15/10/14.
+ * @author Gordon Tony and Isidor on 15/10/14.
  */
 public class catalogue {
     //TODO rensa hela den här klassen på onödiga metoder och variabler
