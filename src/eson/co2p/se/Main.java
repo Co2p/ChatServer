@@ -35,7 +35,7 @@ public class Main {
 
         server ThisServer = new server();
         /**
-         * Tonys geniala funktion, startServer() starts the TCP-server and keeps it alive
+         * Tonys genius method, startServer() starts the TCP-server and keeps it alive
          * we can easily add the functionality of closing the loop by returning false in the
          * method
          */
