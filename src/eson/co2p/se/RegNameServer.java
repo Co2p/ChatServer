@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Retrieves the active servers from the name server
  *
- * Created by gordon on 07/10/14.
+ * @author Isidor, Tony and Gordon on 07/10/14.
  */
 
 public class RegNameServer {
@@ -28,13 +28,15 @@ public class RegNameServer {
             myip = getPublicIp();
             System.out.println("IP: " + myip);
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
+        //TODO dynamic PORT
         catalogue.setThisServer(myip, 8888);
         byte[] sendData = message.reqisterNS();
         byte[] receiveData = new byte[65507];
         ArrayList<Integer> format = new ArrayList<Integer>();
         ArrayList<Object> content = new ArrayList<Object>();
+        // Tries to send a UDP Get to the nameserver
         try {
             System.out.println(" " + catalogue.getNameServerInet() + catalogue.getNameServerPort());
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
@@ -43,13 +45,12 @@ public class RegNameServer {
             System.out.print("Failed to send packet");
             e.printStackTrace();
         }
-        //System.out.println("Sserver iddsds");
-        //Waits for greg answere
+        //Waits for answer from the nameServer
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         try {
             clientSocket.receive(receivePacket);
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         boolean Reged = message.checkRegConf(receivePacket.getData());
         //receivePacket.getData();
