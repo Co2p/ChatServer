@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author gordon on 15/10/14.
  */
 public class catalogue {
-
+    //TODO rensa hela den här klassen på onödiga metoder och variabler
     private static int idNumber;
     private static boolean keepAlive;
     private static String[] ClientMessages = new String[256];
@@ -26,12 +26,13 @@ public class catalogue {
     catalogue(){}
 
 
-
-
+    /**
+     * adds a new thread to the clientlist used in keeping track of all the threads
+     * @param athread   the thread to be added to the list
+     */
     public static void addThread(Thread athread){
         Threads.add(athread);
     }
-
 
     public static boolean GetClientListenerStatus (){
         return ClientListenerAlive;
@@ -47,7 +48,6 @@ public class catalogue {
             return false;
         }
     }
-
 
     public static String GetMessage(int Index){
         String Mess = null;
