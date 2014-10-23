@@ -157,8 +157,11 @@ public class ClientThread implements Runnable {
                     }else if (Opcode == OpCodes.QUIT){
                         byte[] ret = message.userLeaved(userList.getUser(ThreadUserId));
                         System.out.println("Trying to handle user left");
+                        System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
                         catalogue.setMessage(ThreadUserId,ret);
                     }else if(Opcode == OpCodes.CHNICK){
+                        System.out.println("Found user trying to change nick");
+                        System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
                         PDU msg = new PDU(messageByte, messageByte.length);
                         String newNick = null;
                         try {
