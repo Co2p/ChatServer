@@ -49,8 +49,8 @@ public class message {
         return rawdata.getBytes();
     }
     //#==============================================#
-    //#      Below is just some functions Used       #
-    //#   by all other functions across this method  #
+    //#    Below is just some methods used by most   #
+    //#    other methods across this class/package   #
     //#==============================================#
     /**
      *  Checks if the message received by the server is a registration message
