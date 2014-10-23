@@ -30,8 +30,7 @@ public class RegNameServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //TODO dynamic PORT
-        catalogue.setThisServer(myip, 8888);
+        catalogue.setThisServer(myip, catalogue.getPort());
         byte[] sendData = message.reqisterNS();
         byte[] receiveData = new byte[65507];
         ArrayList<Integer> format = new ArrayList<Integer>();

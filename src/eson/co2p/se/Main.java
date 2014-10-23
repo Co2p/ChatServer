@@ -11,7 +11,7 @@ public class Main {
     private static String nameServerAddress = "itchy.cs.umu.se";
     private static int nameServerPort = 1337;
     private static String serverName = "default";
-    private static int serverPort = 8080;
+    private static int serverPort = 8888;
 
     /**
      * Main method, handles input from terminal and adds the nameserver, calls the method for
