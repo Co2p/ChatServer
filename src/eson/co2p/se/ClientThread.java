@@ -108,7 +108,7 @@ public class ClientThread implements Runnable {
                     for(byte[] sendbyte :Messagesleft){
                         try {
                             outToServer.write(sendbyte);
-                            System.out.println("Sent message!");
+                            //System.out.println("Sent message!");
                         } catch (IOException e) {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }

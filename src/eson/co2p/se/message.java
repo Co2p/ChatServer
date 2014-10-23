@@ -135,9 +135,10 @@ public class message {
                 rawdata.setByte(2, (byte) nickname.length());
                 rawdata.setInt(8, getTime());
                 int length = div4(rawdata.length());
+                System.out.println("length: '" + length + "', messageLength: '" + rawdata.getShort(4) + "'");
                 rawdata.extendTo(length + div4(nickname.length()));
                 try {
-                    rawdata.setSubrange(length, nickname.getBytes("UTF-8"));
+                    rawdata.setSubrange(12 + div4(rawdata.getShort(4)), nickname.getBytes("UTF-8"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
