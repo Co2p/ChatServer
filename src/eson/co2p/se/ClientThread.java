@@ -158,6 +158,21 @@ public class ClientThread implements Runnable {
                         byte[] ret = message.userLeaved(userList.getUser(ThreadUserId));
                         System.out.println("Trying to handle user left");
                         catalogue.setMessage(ThreadUserId,ret);
+                    }else if(Opcode == OpCodes.CHNICK){
+                        PDU msg = new PDU(messageByte, messageByte.length);
+                        String newNick = null;
+                        try {
+                            newNick = new String(msg.getSubrange(4, msg.getByte(1)), "UTF-8");
+                        }catch(UnsupportedEncodingException e){
+                            e.printStackTrace();
+                        }
+                        if(newNick != null) {
+                            byte[] ret = message.changeNick(userList.getUser(ThreadUserId), newNick);
+                            System.out.println("Trying to handle user changing nick: '" + newNick + "'");
+                            catalogue.setMessage(-1, ret);
+                        }else{
+                            System.out.println("Can't handle user changing nick");
+                        }
                     }
                     } else {
                         try {
