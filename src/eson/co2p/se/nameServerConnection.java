@@ -5,14 +5,14 @@ import java.net.DatagramSocket;
 import java.util.ArrayList;
 
 /**
- * Created by gordon on 10/10/14.
- *
- * Sends Alive messages to the nameserver.
+ * Sends an alive-message to the nameserver
+ * @author Gordon Tony Isidor on 10/10/14.
  */
 public class nameServerConnection {
     private ArrayList<Integer> format = new ArrayList<Integer>();
     private ArrayList<Object> content = new ArrayList<Object>();
     byte[] outputStream;
+
     //TODO this constructor is never called, is it needed?
     public nameServerConnection(){
         while (catalogue.keepAlive()){
