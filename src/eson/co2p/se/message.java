@@ -78,12 +78,13 @@ public class message {
     public static byte[] reMessage(byte[] message, int ID) {
         PDU rawdata = new PDU(message, message.length);
         int checkSum = rawdata.getByte(3);
-        if (ID != -1) {
+        if (ID != -1) { //  Check if the thread adding the message failed
             String nickname = userList.getUser(ID).getNickname();
-
+            //  Calculate checksum
             if (checkSum != Checksum.calc(rawdata.getBytes(), rawdata.getBytes().length)) {
                 System.out.println("Checksum calculation returned wrong checksum");
             } else {
+                //  Add the nickname and time into the message header
                 rawdata.setByte(2, (byte) nickname.length());
                 rawdata.setInt(8, getTime());
                 int length = rawdata.length();
@@ -99,6 +100,11 @@ public class message {
         return null;
     }
 
+    /**
+     * returns a message containing all the connected users and their nicknames
+     *
+     * @return  the created bytearray containing connected users
+     */
     public static byte[] nickNames(){
         ArrayList<User> users= userList.getUserList();
         int connected = userList.getConnected();
@@ -109,9 +115,9 @@ public class message {
         int totSize = 0;
         try {
             for(User s:users){
+                //  Check so that the user is not removed from the array
                 if(s != null) {
                     int currentSize = rawdata.length();
-                    System.out.println("CurrentSize: " + currentSize);
                     int nickLength = s.getNickname().getBytes().length;
                     rawdata.extendTo(currentSize + nickLength + 1);
                     System.out.println("CurrentSize = " + currentSize + ", nickLength = " + nickLength);
@@ -120,24 +126,30 @@ public class message {
                     totSize += (nickLength + 1);
                 }
             }
-            //Insert length of all usernames
+            //  Insert length of all usernames
             rawdata.setShort(2, (short)totSize);
-            /*
-            for (int i = 0; i < connected; i++) {
-                int currentSize = rawdata.length();
-                int nickLength = catalogue.getClient(i).getNickname().getBytes().length;
-                rawdata.extendTo(currentSize + nickLength + 1);
-                rawdata.setSubrange(currentSize, (catalogue.getClient(i).getNickname() + "\0").getBytes("UTF-8"));
-            }*/
         }catch(UnsupportedEncodingException e){
             e.printStackTrace();
         }
+        /*  The length of the message sent must be divisible by four, eg. if the message looks something like this:
+         *  Robert\0A
+         *  rnold\0Ka
+         *  lle\0
+         *  Add zeros to the last row so that the whole message is divisible by four
+         */
         if(rawdata.length()%4!=0){
             rawdata.extendTo(rawdata.length()+rawdata.length()%4);
         }
         return rawdata.getBytes();
     }
 
+    /**
+     * Creates a message to be sent to all users connected to the server when an user
+     * joins the server, includes nickname and time when server SENT the message
+     *
+     * @param nickname  the nickname of the user joining the server
+     * @return  the created byte-array containing header and message
+     */
     public static byte[] userJoined(String nickname){
         PDU rawdata = null;
         try {
@@ -153,12 +165,22 @@ public class message {
         return rawdata.getBytes();
     }
 
+    /**
+     * Creates a message saying that the server is shutting down
+     * @return  the created byte-array containing the message
+     */
     public static byte[] serverQuit(){
         PDU rawdata = new PDU(4);
         rawdata.setByte(0, (byte)OpCodes.QUIT);
         return rawdata.getBytes();
     }
 
+    /**
+     *  Creates a message if a user joined that's supposed to be
+     *  sent to all users connected to the server
+     * @param user  The user that joined
+     * @return  the created byte-array containing the header and the message
+     */
     public static byte[] userLeaved(User user){
         PDU rawdata = null;
         try {
@@ -174,6 +196,13 @@ public class message {
         return rawdata.getBytes();
     }
 
+    /**
+     *  Sets and creates a message if a user requested a nickchange in the server
+     *
+     * @param user  the user that wants to change nick
+     * @param newNick   the new nick of the user
+     * @return  the created byte-array containing header and message
+     */
     public static byte[] changeNick(User user, String newNick){
         PDU rawdata = null;
         try {
@@ -187,7 +216,8 @@ public class message {
             rawdata.setInt(4, getTime());
             rawdata.setSubrange(8, user.getNickname().getBytes("UTF-8"));
             rawdata.setSubrange(8 + div4(nickLength), newNick.getBytes("UTF-8"));
-
+            //  Set a new nickname for the user in his/her object
+            //TODO check so that this works across threads
             user.setNickname(newNick);
 
         }catch(UnsupportedEncodingException e){
@@ -214,13 +244,9 @@ public class message {
     /**
      * getTime returns the time in seconds since the 1970's
      *
-     * @return the time in seconds since the 1970'ss
+     * @return the time in seconds since the 1970's
      */
     public static int getTime(){
-        /*Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
-        calendar.clear();
-        calendar.set(2011, Calendar.OCTOBER, 1);
-        return (int)(calendar.getTimeInMillis() / 1000L);*/
         return (int)(System.currentTimeMillis() / 1000L);
     }
 }
