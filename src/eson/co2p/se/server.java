@@ -15,6 +15,10 @@ public class server {
     private String name;
     private int port;
 
+    /**
+     * Creates and starts a new server and listens for new connections made to the server
+     * @return  true when the server is closed
+     */
     public boolean StartServer(){
         ServerSocket serverSocket = null;
         port = catalogue.getPort();
@@ -25,7 +29,7 @@ public class server {
 
         try {
             serverSocket = new ServerSocket(port);
-            //every time an connection is made, start an new clientthread.
+            //every time a connection is made, start a new client-thread.
 
             while (nrofconnections < maxconnections) {
                 System.out.print("Listening for clients..\n");

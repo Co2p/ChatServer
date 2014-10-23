@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 /**
  * Saves states and information about the server
- * @author gordon on 15/10/14.
+ * @author Gordon Tony and Isidor on 15/10/14.
  */
 public class catalogue {
-
+    //TODO rensa hela den här klassen på onödiga metoder och variabler
     private static int idNumber;
     private static boolean keepAlive;
 
@@ -78,6 +78,11 @@ public class catalogue {
        }
         return true;
     }
+
+    /**
+     * adds a new thread to the clientlist used in keeping track of all the threads
+     * @param athread   the thread to be added to the list
+     */
     public static void addThread(Thread athread){
         Threads.add(athread);
     }

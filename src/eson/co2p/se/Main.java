@@ -14,7 +14,7 @@ public class Main {
     //  Default values
     private static String nameServerAddress = "itchy.cs.umu.se";
     private static int nameServerPort = 1337;
-    private static String serverName = "default";
+    private static String serverName = "GIT's dödsserver för öppet homosexuella";
     private static int serverPort = 8888;
 
     /**
@@ -40,7 +40,12 @@ public class Main {
         System.out.print("thread started\n");
 
         server ThisServer = new server();
-        while(ThisServer.StartServer()){;} //UEeWhatIDidThere?
+        /**
+         * Tonys genius method, startServer() starts the TCP-server and keeps it alive
+         * we can easily add the functionality of closing the loop by returning false in the
+         * method
+         */
+        while(ThisServer.StartServer()){;}
     }
 
     /**

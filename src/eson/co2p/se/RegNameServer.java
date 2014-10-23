@@ -14,16 +14,17 @@ import java.util.ArrayList;
 
 public class RegNameServer {
     /**
-     * Sends a getserverlist message to the nameserver from catalogue, and then
-     * handles the return from the server.
+     * Sends a getserverlist message to the nameserver from catalogue which in turn
+     * adds the server as a new server on the nameserver so that new users can connect
+     * via the nameserver, and then handles the return from the server.
      *
      * @return  a list of all servers returned by the nameservers
      * @throws Exception
      */
     public void regserver() throws SocketException {
         DatagramSocket clientSocket = new DatagramSocket();
-        //InetAddress adr = new InetAddress(InetAddress.getLoopbackAddress());
         InetAddress myip = null;
+        //  gets the public IP-address
         try {
             myip = getPublicIp();
             System.out.println("IP: " + myip);
@@ -35,7 +36,7 @@ public class RegNameServer {
         byte[] receiveData = new byte[65507];
         ArrayList<Integer> format = new ArrayList<Integer>();
         ArrayList<Object> content = new ArrayList<Object>();
-        // Tries to send a UDP Get to the nameserver
+        // Tries to send an UDP Get to the nameserver
         try {
             System.out.println(" " + catalogue.getNameServerInet() + catalogue.getNameServerPort());
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
@@ -44,17 +45,18 @@ public class RegNameServer {
             System.out.print("Failed to send packet");
             e.printStackTrace();
         }
-        //Waits for answer from the nameServer
+        //  Waits for answer from the nameServer
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         try {
             clientSocket.receive(receivePacket);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        boolean Reged = message.checkRegConf(receivePacket.getData());
-        //receivePacket.getData();
-        if (Reged){
-            System.out.println("Sserver idID: " + catalogue.getIdNumber());
+        //  If the server ACK'd the connection, receive the server-ID set by the nameserver
+        //  And start sending keep-alive messages to the server
+        boolean registered = message.checkRegConf(receivePacket.getData());
+        if (registered){
+            System.out.println("Server ID: " + catalogue.getIdNumber());
             Thread KeepServerAlive;
             KeepServerAlive = new Thread(new Runnable() {
                 @Override
@@ -75,6 +77,7 @@ public class RegNameServer {
      * @throws Exception    if the server can't connect to the service
      */
     public InetAddress getPublicIp() throws Exception{
+        //  the address to the service, this can be anything that provides a public ip of the original sender
         URL whatismyip = new URL("http://checkip.amazonaws.com");
         BufferedReader in = null;
         try {
