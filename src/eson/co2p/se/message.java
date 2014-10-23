@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Includes all messages sent from the the chatserver to the nameserver and clients
  * Including some other functions used in breaking down and creating a message such as
  * div4 - checks if a number is divisible by four and if it is not, rounds it up to four
- * getTime - returns the time in UNIX-time
+ * and getTime - returns the time in UNIX-time
  * @author Isidor, Tony and Gordon on 2014-10-15
  */
 public class message {
