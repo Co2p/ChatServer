@@ -123,9 +123,9 @@ public class message {
         if (ID != -1) { //  Check if the thread adding the message failed
             String nickname = userList.getUser(ID).getNickname();
             //  Calculate checksum
-            if (checkSum != Checksum.calc(rawdata.getBytes(), rawdata.getBytes().length)) {
-                System.out.println("Checksum calculation returned wrong checksum");
-            } else {
+            //if (checkSum != Checksum.calc(rawdata.getBytes(), rawdata.getBytes().length)) {
+            //    System.out.println("Checksum calculation returned wrong checksum");
+            //} else {
                 //  Add the nickname and time into the message header
                 rawdata.setByte(2, (byte) nickname.length());
                 rawdata.setInt(8, getTime());
@@ -137,7 +137,7 @@ public class message {
                     e.printStackTrace();
                 }
                 return rawdata.getBytes();
-            }
+            //}
         }
         return null;
     }
