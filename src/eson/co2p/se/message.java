@@ -129,7 +129,7 @@ public class message {
                 //  Add the nickname and time into the message header
                 rawdata.setByte(2, (byte) nickname.length());
                 rawdata.setInt(8, getTime());
-                int length = rawdata.length();
+                int length = div4(rawdata.length());
                 rawdata.extendTo(length + div4(nickname.length()));
                 try {
                     rawdata.setSubrange(length, nickname.getBytes("UTF-8"));
