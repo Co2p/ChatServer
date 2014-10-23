@@ -2,7 +2,6 @@ package eson.co2p.se;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Queue;
 
 /**
  * Stores users, has a upper limit of 255 at any given time

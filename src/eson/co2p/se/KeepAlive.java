@@ -1,8 +1,6 @@
 package eson.co2p.se;
 
-import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.

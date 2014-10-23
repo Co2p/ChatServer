@@ -1,12 +1,7 @@
 package eson.co2p.se;
 
-import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.TimeZone;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * Includes all messages sent from the the chatserver to the nameserver and clients

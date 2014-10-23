@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.util.ArrayList;
-import java.io.*;
 
 /**
  * Retrieves the active servers from the name server
