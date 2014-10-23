@@ -39,11 +39,15 @@ public class ClientThread implements Runnable {
         ArrayList<byte[]> Messagestosend = new ArrayList<byte[]>();
         int FoundMessages = 0;
         int mplus = 0;
+        int greatestId = -1;
         for(ArrayList<Object> M :Messages){
             for(Object A :M){
                 if(A.getClass().equals(Integer.class)){
                     int a = (Integer)A;
                     if(a > LastMessageId){
+                        if(a > greatestId){
+                            greatestId = a;
+                        }
                         if(Messages.get(mplus).get(0).getClass().equals(byte[].class)){
                             byte[] mess = (byte[])Messages.get(mplus).get(0);
                             Messagestosend.add(mess);
@@ -54,6 +58,11 @@ public class ClientThread implements Runnable {
                 }
             }
             mplus ++;
+        }
+        if(greatestId != -1){
+            if(greatestId > LastMessageId){
+                LastMessageId = greatestId;
+            }
         }
         return Messagestosend;
     }
