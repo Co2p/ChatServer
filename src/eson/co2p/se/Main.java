@@ -14,7 +14,7 @@ public class Main {
     //  Default values
     private static String nameServerAddress = "itchy.cs.umu.se";
     private static int nameServerPort = 1337;
-    private static String serverName = "default";
+    private static String serverName = "GIT's dödsserver för öppet homosexuella";
     private static int serverPort = 8888;
 
     /**
