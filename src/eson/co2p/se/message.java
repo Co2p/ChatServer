@@ -68,7 +68,7 @@ public class message {
      *
      * @param message   the incoming message
      * @param ID  the ID of the client sending the message
-     * @return  new message with added nickname and timebytes
+     * @return  new message with added nickname and timebytesd
      */
     public static byte[] reMessage(byte[] message, int ID){
         PDU rawdata = new PDU(message, message.length);
