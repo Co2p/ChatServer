@@ -5,7 +5,7 @@ import java.net.DatagramSocket;
 import java.util.ArrayList;
 
 /**
- * Sends an alive-message to the nameserver
+ * Calls the methods for connecting to the nameserver and handles keep-alive messages
  * @author Gordon Tony Isidor on 10/10/14.
  */
 public class nameServerConnection {
