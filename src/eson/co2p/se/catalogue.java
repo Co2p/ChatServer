@@ -42,7 +42,27 @@ public class catalogue {
     private static int index = 0;
     private static boolean initsoflistsdone = false;
     private static boolean QuoeInuse = false;
+    private static boolean Safeaddmessage = true;
 
+    public static void addNewId(int index){
+        int NewId = addtoid();
+        ClientMessagesID2.set(index, NewId);
+    }
+    public static boolean AddMessade(int index,byte[] mess ){
+        fillArrays();
+        if(Safeaddmessage){
+            System.out.println("ts: true");
+            Safeaddmessage = false;
+            System.out.println("Adding message on pos: " + index);
+            ClientMessages2.set(index,mess);
+            addNewId(index);
+            Safeaddmessage = true;
+            System.out.println("ts: false");
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     public static ArrayList<Integer> getQuoeids(){
         return new ArrayList<Integer>(QuoeIds);
@@ -68,14 +88,14 @@ public class catalogue {
 
     public static int addtoid(){
         index ++;
-        return  index;
+        return index;
     }
     public static boolean fillArrays(){
         if(!initsoflistsdone){
             for(int g = 0; g < 256; g++){
                 byte[] byt = new byte[]{1};
-                ClientMessages.add(byt);
-                ClientMessagesID.add(addtoid());
+                ClientMessages2.add(byt);
+                ClientMessagesID2.add(addtoid());
                 initsoflistsdone = true;
                 }
             }
@@ -89,6 +109,17 @@ public class catalogue {
         fillArrays();
         return new ArrayList<byte[]>(ClientMessages2);
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

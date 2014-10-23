@@ -12,10 +12,10 @@ import java.net.UnknownHostException;
  */
 public class Main {
     //  Default values
-    private static String nameServerAddress = "itchy.cs.umu.se";
-    private static int nameServerPort = 1337;
+    private static String nameServerAddress = "85.11.41.32";
+    private static int nameServerPort = 1338;
     private static String serverName = "GIT's dödsserver för öppet homosexuella";
-    private static int serverPort = 9999;
+    private static int serverPort = 8888;
 
     /**
      * Main method, handles input from terminal and adds the nameserver, calls the method for

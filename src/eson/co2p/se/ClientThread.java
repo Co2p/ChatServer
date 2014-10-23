@@ -49,9 +49,11 @@ public class ClientThread implements Runnable {
         ArrayList<byte[]> Qnames = catalogue.getQuoeMessages();
         ArrayList<byte[]> Messages = new ArrayList<byte[]>();
         GetfirstId();
+        //System.out.println("adding message.. " + QIds.size());
         for(int g = 0; g < QIds.size(); g++ ){
             if(this.LastMessageId < QIds.get(g)){
                 Messages.add(Qnames.get(g));
+                System.out.println("adding message: " + Qnames.get(g) + " .. " + g);
                 this.LastMessageId = QIds.get(g);
             }
         }
@@ -85,7 +87,6 @@ public class ClientThread implements Runnable {
             byte[] messageByteNew;
             //System.out.print("reading data");
 
-
             int bytesRead = 0;
 
             if(!NewUserChek()) {
@@ -96,6 +97,7 @@ public class ClientThread implements Runnable {
                     int inde = 0;
                     ArrayList<byte[]> Messagestosend_copy = new ArrayList<byte[]>(Messagesleft);
                     ArrayList<Integer> removelist = new ArrayList<Integer>();
+
                     for(byte[] sendbyte :Messagesleft){
                         try {
                             outToServer.write(sendbyte);
@@ -104,7 +106,6 @@ public class ClientThread implements Runnable {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }
                         removelist.add(inde);
-
                         inde ++;
                     }
                     for(int j = 0; j < removelist.size(); j++){
@@ -148,8 +149,10 @@ public class ClientThread implements Runnable {
                         }
                     } else if(Opcode == OpCodes.MESSAGE){
                         byte[] BS = message.reMessage(messageByteNew, ThreadUserId);
-                        System.out.println("Handeling op code 10 \n ");
-                        catalogue.setMessage(ThreadUserId,BS);
+                        System.out.println("Handeling op code 10 , thread" + ThreadUserId +" \n ");
+                        //catalogue.setMessage(ThreadUserId,BS);
+                        while (!catalogue.AddMessade(ThreadUserId,BS));
+                        System.out.println("added this fucka \n ");
 
                     }else if (Opcode == OpCodes.QUIT){
                         byte[] ret = message.userLeaved(userList.getUser(ThreadUserId));
