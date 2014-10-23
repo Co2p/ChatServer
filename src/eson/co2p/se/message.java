@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class message {
     //#==============================================#
-    //#                Below is all                  #
     //#  Messages sent to nameServer by the server   #
     //#==============================================#
     /**
@@ -52,7 +51,7 @@ public class message {
         return rawdata.getBytes();
     }
     //#==============================================#
-    //#    Below is just some methods used by most   #
+    //#        Just some methods used by most        #
     //#    other methods across this class/package   #
     //#==============================================#
     /**
@@ -108,7 +107,6 @@ public class message {
         return (int)(System.currentTimeMillis() / 1000L);
     }
     //#==============================================#
-    //#                Below is all                  #
     //#       Messages sent to clients by server     #
     //#==============================================#
     /**
