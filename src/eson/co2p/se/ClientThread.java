@@ -154,6 +154,10 @@ public class ClientThread implements Runnable {
                         System.out.println("Handeling op code 10 \n ");
                         catalogue.setMessage(ThreadUserId,BS);
 
+                    }else if (Opcode == OpCodes.QUIT){
+                        byte[] ret = message.userLeaved(userList.getUser(ThreadUserId));
+                        System.out.println("Trying to handle user left");
+                        catalogue.setMessage(ThreadUserId,ret);
                     }
                     } else {
                         try {
