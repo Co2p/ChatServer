@@ -16,9 +16,8 @@ public class server {
     private int port;
 
     public boolean StartServer(){
-        //TODO Get port from correct place, lol
         ServerSocket serverSocket = null;
-        port = 8888;
+        port = catalogue.getPort();
 
         //TODO FIX client counter...
         int nrofconnections = 0;

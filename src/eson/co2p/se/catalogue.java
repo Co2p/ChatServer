@@ -14,6 +14,7 @@ public class catalogue {
     private static String[] ClientMessages = new String[256];
     private static String[] OldClientMessages = new String[256];
     private static String name;
+    private static int port;
     private static server nameServer = new server();
     private static server thisServer = new server();
     private static boolean ClientListenerAlive = false;
@@ -84,11 +85,25 @@ public class catalogue {
     }
 
     /**
-     * Sets the user name
-     * @param name user name
+     * Sets the server name
+     * @param name server name
      */
     public static void setName(String name) {
         catalogue.name = name;
+    }
+
+    /**
+     * Sets the server port
+     * @param port the server port
+     */
+    public static void setPort(int port){
+        catalogue.port = port;
+    }
+    /**
+     * Gets the server port
+     */
+    public static int getPort(){
+        return catalogue.port;
     }
 
     /**
@@ -118,8 +133,8 @@ public class catalogue {
     }
 
     /**
-     * Returns the user name
-     * @return user name
+     * Returns the server name
+     * @return server name
      */
     public static String getName() {
         return name;
