@@ -11,7 +11,10 @@ public class catalogue {
     //TODO rensa hela den här klassen på onödiga metoder och variabler
     private static int idNumber;
     private static boolean keepAlive;
-    private static String[] ClientMessages = new String[256];
+
+    static ArrayList<byte[]> ClientMessages = new ArrayList<byte[]>();
+    static ArrayList<Integer> ClientMessagesID = new ArrayList<Integer>();
+
     private static String[] OldClientMessages = new String[256];
     private static String name;
     private static int port;
@@ -20,11 +23,61 @@ public class catalogue {
     private static boolean ClientListenerAlive = false;
     public static boolean threadSafeChek = true;
     private static int idTop = 0;
+    private static boolean Messagelistfilled = false;
+    private static ArrayList <ArrayList> LastMessage = new ArrayList <ArrayList>();
+    private static int Message_ID = 1;
+
+
 
     static ArrayList<Thread> Threads = new ArrayList<Thread>();
 
     catalogue(){}
+    public static ArrayList<ArrayList> GetMessageQuoe(){
+        return LastMessage;
+    }
+    public static void AddToLastMessage(ArrayList obj){
+        if(LastMessage.size() < 100){
+            LastMessage.add(obj);
+        }
+        else{
+            LastMessage.add(0,obj);//probably need to remove the position 101 here...
+        }
+    }
+    public static int UpdateMessageId(){
+        Message_ID ++;
+        return Message_ID;
+    }
+    public static ArrayList<byte[]> GetMessageList(){
+        return  ClientMessages;
+    }
+    public static ArrayList<Integer> GetMessageListID(){
+        return  ClientMessagesID;
+    }
 
+    public static void setMessage (int Index, byte[] message){
+        //TODO: is this safe?
+        //TODO:FUUUUCK!
+        if(fillmessagelist()){
+            ClientMessages.set(Index ,message);
+            ClientMessagesID.set(Index ,UpdateMessageId());
+        }
+    }
+    private static boolean fillmessagelist(){
+       if(!Messagelistfilled){
+           Messagelistfilled = true;
+           byte[] lol = new byte[]{0};
+           int g = -1;
+           for(int i = 0;i < 256; i++){
+               ClientMessages.add(lol);
+               ClientMessagesID.add(g);
+           }
+           ArrayList<Object> Obj = new ArrayList<Object>();
+           Obj.add(Message_ID);
+           Obj.add(lol);
+           LastMessage.add(Obj);
+       }
+        return true;
+    }
 
     /**
      * adds a new thread to the clientlist used in keeping track of all the threads
@@ -33,6 +86,7 @@ public class catalogue {
     public static void addThread(Thread athread){
         Threads.add(athread);
     }
+
 
     public static boolean GetClientListenerStatus (){
         return ClientListenerAlive;
@@ -49,19 +103,6 @@ public class catalogue {
         }
     }
 
-    public static String GetMessage(int Index){
-        String Mess = null;
-        if (ClientMessages[Index].length() > 1) {
-            Mess = ClientMessages[Index];
-        }
-        return Mess;
-    }
-
-    public static void SetMessage(int Index, String mess){
-        OldClientMessages[Index] = ClientMessages[Index];
-        ClientMessages[Index] = mess;
-
-    }
 
     public static void setThisServer(InetAddress ip, int port){
         thisServer.setIp(ip);

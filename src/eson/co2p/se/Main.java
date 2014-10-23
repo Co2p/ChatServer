@@ -32,6 +32,12 @@ public class Main {
         RegNameServer RegServer = new RegNameServer();
         RegServer.regserver();
 
+        Thread Messchekthread = new Thread(new MessageChekerThread());
+
+        catalogue.addThread(Messchekthread);
+        System.out.print("Starting messagecheking thread\n");
+        Messchekthread.start();
+        System.out.print("thread started\n");
 
         server ThisServer = new server();
         /**

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Handles the main threads of the program
@@ -16,10 +17,13 @@ public class ClientThread implements Runnable {
     private Socket passedSocket;
     private Integer ThreadUserId;
 
+    ArrayList<byte[]> Messagestosend = new ArrayList<byte[]>();
+
     private String LastUser = "default";
     private String MyName = "default";
 
     private boolean FirstRun = true;
+    private int LastMessageId = -1;
 
     private PrintStream outToServer;
     public DataInputStream Recived_Data;
@@ -30,6 +34,28 @@ public class ClientThread implements Runnable {
         Recived_Data = new DataInputStream(this.passedSocket.getInputStream());
         outToServer = new PrintStream(this.passedSocket.getOutputStream(), true);
         System.out.print("made inputs/outputs ant socket..");
+    }
+    private int ChekMessages(){
+        ArrayList<ArrayList> Messages = catalogue.GetMessageQuoe();
+        int FoundMessages = 0;
+        int mplus = 0;
+        for(ArrayList<Object> M :Messages){
+            for(Object A :M){
+                if(A.getClass().equals(Integer.class)){
+                    int a = (Integer)A;
+                    if(a > LastMessageId){
+                        if(Messages.get(mplus).get(0).getClass().equals(byte[].class)){
+                            byte[] mess = (byte[])Messages.get(mplus).get(0);
+                            Messagestosend.add(mess);
+                            FoundMessages ++;
+                        }
+                        //this message isen't sent
+                    }
+                }
+            }
+            mplus ++;
+        }
+        return FoundMessages;
     }
 
 
@@ -60,37 +86,55 @@ public class ClientThread implements Runnable {
             int bytesRead = 0;
 
             if(!NewUserChek()) {
-
+                int Messagesleft = ChekMessages();
+                if (Messagesleft >= 1){
+                    int inde = 0;
+                    for(byte[] sendbyte :Messagestosend){
+                        try {
+                            outToServer.write(sendbyte);
+                        } catch (IOException e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        Messagestosend.remove(inde);
+                        inde ++;
+                    }
+                }
                 try {
                     bytesRead = Recived_Data.read(messageByte);
                 } catch (Exception e) {;}
                 System.out.print("............\n");
                 if (bytesRead > 8) {
-                    PDU temp = new PDU(messageByte, messageByte.length);
-                    String Usernamr = checkReg(temp);
-                    System.out.println("Username: " + Usernamr + "\n");
-                    if (!Usernamr.isEmpty()) {
-                        MyName = Usernamr;
-                        User user = createUser(Usernamr);
-                        ThreadUserId = userList.addUser(user);
-                        if (!ThreadUserId.equals(null)) {//om meddelandet är ett Join
-                            try {
-                                outToServer.write(message.nickNames());
-                                userList.setLastUser(MyName);
-                                LastUser = userList.GetLastUser();
-                                System.out.print("Sent accept!\n");
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                    int Opcode = message.getOp(messageByte);
+                    if(Opcode == OpCodes.REG){
+                        PDU temp = new PDU(messageByte, messageByte.length);
+                        String Usernamr = checkReg(temp);
+                        System.out.println("Username: " + Usernamr + "\n");
+                        if (!Usernamr.equals(null)) {
+                            MyName = Usernamr;
+                            User user = createUser(Usernamr);
+                            ThreadUserId = userList.addUser(user);
+                            if (!ThreadUserId.equals(null)) {//om medelandet är ett Join
+                                try {
+                                    outToServer.write(message.nickNames());
+                                    userList.setLastUser(MyName);
+                                    LastUser = userList.GetLastUser();
+                                    System.out.print("Sent accept!\n");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
+                    } else if(Opcode == OpCodes.MESSAGE){
+                        byte[] BS = message.reMessage(messageByte, ThreadUserId);
+                        catalogue.setMessage(ThreadUserId,BS);
                     }
-                } else {
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        System.out.println("not able to sleep: " + e);
+                    } else {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            System.out.println("not able to sleep: " + e);
+                        }
                     }
-                }
             }else{
                 try {
                     System.out.println("Sending Ujoind! user: "+ userList.GetLastUser());
