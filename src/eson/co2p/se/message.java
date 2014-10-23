@@ -67,11 +67,15 @@ public class message {
      * time of sending out
      *
      * @param message   the incoming message
-     * @param nickname  the nickname of the bloke who wrote the message
+     * @param ID  the ID of the client sending the message
      * @return  new message with added nickname and timebytes
      */
-    public static byte[] reMessage(byte[] message, String nickname){
+    public static byte[] reMessage(byte[] message, int ID){
         PDU rawdata = new PDU(message, message.length);
+        int checkSum = rawdata.getByte(3);
+        String nickname = userList.getUser(ID).getNickname();
+
+        //if(checkSum != rawdata.getBytes())
         rawdata.setByte(2, (byte)nickname.length());
         rawdata.setInt(8, getTime());
         int length = rawdata.length();
