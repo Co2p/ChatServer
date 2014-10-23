@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Retrieves the active servers from the name server
  *
- * Created by gordon on 07/10/14.
+ * @author Gordon, Isidor, Tony 23 October 2014
  */
 
 public class RegNameServer {
@@ -66,6 +66,12 @@ public class RegNameServer {
             System.out.println("Server is now set to keep alive");
         }
     }
+
+    /**
+     * Uses checkip.amazonaws.com to determine the internet IP of the server
+     * @return the IP of this server
+     * @throws Exception
+     */
     public InetAddress getPublicIp() throws Exception{
         URL whatismyip = new URL("http://checkip.amazonaws.com");
         BufferedReader in = null;

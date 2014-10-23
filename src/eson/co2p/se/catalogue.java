@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Saves states and information about the server
- * @author gordon on 15/10/14.
+ * @author Gordon, Isidor, Tony 23 October 2014
  */
 public class catalogue {
 
@@ -25,13 +25,15 @@ public class catalogue {
     catalogue(){}
 
 
-
-
+    /**
+     * Adds a thread to a list of all of the running threads
+     * @param athread The thread to be added
+     */
     public static void addThread(Thread athread){
         Threads.add(athread);
     }
 
-
+    //TODO ta bort detta?
     public static boolean GetClientListenerStatus (){
         return ClientListenerAlive;
     }
