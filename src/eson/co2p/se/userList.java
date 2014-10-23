@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
- * Stores users, has a upper limit of 255 at any given time
- * @author gordon on 22/10/14.
+ * Stores users, has a upper limit of 255 at any given time, also handles the
+ * information gathered by threads checking for Users connecting and disconnecting
+ * @author Gordon Tony and Isidor on 22/10/14.
  */
 public class userList {
     private static ArrayList<User> users = new ArrayList<User>();
