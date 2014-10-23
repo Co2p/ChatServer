@@ -22,6 +22,7 @@ public class ClientThread implements Runnable {
     private String MyName = "default";
 
     private boolean FirstRun = true;
+    private boolean FirstRun2 = true;
     private int LastMessageId = -1;
 
     private PrintStream outToServer;
@@ -29,55 +30,45 @@ public class ClientThread implements Runnable {
 
     public ClientThread(Socket gotensocked) throws IOException {
         this.passedSocket = gotensocked;
-        this.passedSocket.setSoTimeout(100);
-        Recived_Data = new DataInputStream(this.passedSocket.getInputStream());
-        outToServer = new PrintStream(this.passedSocket.getOutputStream(), true);
+        this.passedSocket.setSoTimeout(50);
+        this.Recived_Data = new DataInputStream(this.passedSocket.getInputStream());
+        this.outToServer = new PrintStream(this.passedSocket.getOutputStream(), true);
         System.out.print("made inputs/outputs ant socket..");
     }
+
+    private boolean GetfirstId(){
+        if(this.FirstRun2){
+            this.LastMessageId = catalogue.GetIndex();
+            this.FirstRun2 = false;
+        }
+        return true;
+    }
+
     private ArrayList<byte[]> ChekMessages(){
-        ArrayList<ArrayList> Messages = new ArrayList<ArrayList>(catalogue.GetMessageQuoe());
-        ArrayList<byte[]> Messagestosend = new ArrayList<byte[]>();
-        int FoundMessages = 0;
-        int mplus = 0;
-        int greatestId = -1;
-        for(ArrayList<Object> M :Messages){
-            for(Object A :M){
-                if(A.getClass().equals(Integer.class)){
-                    int a = (Integer)A;
-                    if(a > LastMessageId){
-                        if(a > greatestId){
-                            greatestId = a;
-                        }
-                        if(Messages.get(mplus).get(0).getClass().equals(byte[].class)){
-                            byte[] mess = (byte[])Messages.get(mplus).get(0);
-                            Messagestosend.add(mess);
-                            FoundMessages ++;
-                        }
-                        //this message isen't sent
-                    }
-                }
-            }
-            mplus ++;
-        }
-        if(greatestId != -1){
-            if(greatestId > LastMessageId){
-                LastMessageId = greatestId;
+        ArrayList<Integer> QIds = catalogue.getQuoeids();
+        ArrayList<byte[]> Qnames = catalogue.getQuoeMessages();
+        ArrayList<byte[]> Messages = new ArrayList<byte[]>();
+        GetfirstId();
+        for(int g = 0; g < QIds.size(); g++ ){
+            if(this.LastMessageId < QIds.get(g)){
+                Messages.add(Qnames.get(g));
+                this.LastMessageId = QIds.get(g);
             }
         }
-        return Messagestosend;
+        return Messages;
     }
 
 
     public boolean NewUserChek(){
-        if(FirstRun){
-            FirstRun = false;
+        if(this.FirstRun){
+            this.FirstRun = false;
             return false;
         }
-        if(userList.GetLastUser().equals(MyName) || userList.GetLastUser().equals(LastUser)){
+        if(userList.GetLastUser().equals(this.MyName) || userList.GetLastUser().equals(LastUser)){
             return false;
         }
         else{
-            LastUser = userList.GetLastUser();
+            this.LastUser = userList.GetLastUser();
             return true;
         }
 
@@ -91,15 +82,14 @@ public class ClientThread implements Runnable {
         while(true) {//TODO this is sh1t, can't stop, fix it later
 
             byte[] messageByte = new byte[1000];
-
-            System.out.print("reading data");
+            byte[] messageByteNew;
+            //System.out.print("reading data");
 
             int bytesRead = 0;
 
-
             if(!NewUserChek()) {
                 ArrayList<byte[]> Messagesleft = ChekMessages();
-                System.out.println("Values: " +Messagesleft.size()+" empty?: "+ Messagesleft.isEmpty());
+                //System.out.println("Values: " +Messagesleft.size()+" empty?: "+ Messagesleft.isEmpty());
                 if (!Messagesleft.isEmpty()){
                     System.out.print("messages left: " + Messagesleft + "\n");
                     int inde = 0;
@@ -108,7 +98,7 @@ public class ClientThread implements Runnable {
                     for(byte[] sendbyte :Messagesleft){
                         try {
                             outToServer.write(sendbyte);
-                            //System.out.println("Sent message!");
+                            System.out.println("Sent message!" + new String(sendbyte, "UTF-8") + "\n");
                         } catch (IOException e) {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }
@@ -124,25 +114,31 @@ public class ClientThread implements Runnable {
 
                 try {
                     bytesRead = Recived_Data.read(messageByte);
+
                 } catch (Exception e) {;}
-                System.out.print("............\n");
+
+                messageByteNew = new byte[bytesRead];
+                for(int i = 0; i < bytesRead; i++ ){
+                    messageByteNew[i] =  messageByte[i];
+                }
+                //System.out.print("............\n");
                 if (bytesRead > 8) {
                     System.out.print("getting  op\n");
-                    int Opcode = message.getOp(messageByte);
+                    int Opcode = message.getOp(messageByteNew);
                     System.out.print("op is:" + Opcode + "\n");
                     if(Opcode == OpCodes.JOIN){
-                        PDU temp = new PDU(messageByte, messageByte.length);
+                        PDU temp = new PDU(messageByteNew, messageByteNew.length);
                         String Usernamr = checkReg(temp);
                         System.out.println("Username: " + Usernamr + "\n");
                         if (!Usernamr.equals(null)) {
-                            MyName = Usernamr;
+                            this.MyName = Usernamr;
                             User user = createUser(Usernamr);
                             ThreadUserId = userList.addUser(user);
                             if (!ThreadUserId.equals(null)) {//om medelandet är ett Join
                                 try {
                                     outToServer.write(message.nickNames());
-                                    userList.setLastUser(MyName);
-                                    LastUser = userList.GetLastUser();
+                                    userList.setLastUser(this.MyName);
+                                    this.LastUser = userList.GetLastUser();
                                     System.out.print("Sent accept!\n");
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -150,7 +146,7 @@ public class ClientThread implements Runnable {
                             }
                         }
                     } else if(Opcode == OpCodes.MESSAGE){
-                        byte[] BS = message.reMessage(messageByte, ThreadUserId);
+                        byte[] BS = message.reMessage(messageByteNew, ThreadUserId);
                         System.out.println("Handeling op code 10 \n ");
                         catalogue.setMessage(ThreadUserId,BS);
 
@@ -162,7 +158,8 @@ public class ClientThread implements Runnable {
                     }else if(Opcode == OpCodes.CHNICK){
                         System.out.println("Found user trying to change nick");
                         System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
-                        PDU msg = new PDU(messageByte, messageByte.length);
+                        //PDU msg = new PDU(messageByte, messageByte.length);
+                        PDU msg = new PDU(messageByteNew, messageByteNew.length);
                         String newNick = null;
                         try {
                             newNick = new String(msg.getSubrange(4, msg.getByte(1)), "UTF-8");
@@ -172,14 +169,14 @@ public class ClientThread implements Runnable {
                         if(newNick != null) {
                             byte[] ret = message.changeNick(userList.getUser(ThreadUserId), newNick);
                             System.out.println("Trying to handle user changing nick: '" + newNick + "'");
-                            catalogue.setMessage(-1, ret);
+                            catalogue.setMessage(ThreadUserId, ret);
                         }else{
                             System.out.println("Can't handle user changing nick");
                         }
                     }
                     } else {
                         try {
-                            Thread.sleep(10);
+                            Thread.sleep(20);
                         } catch (InterruptedException e) {
                             System.out.println("not able to sleep: " + e);
                         }
@@ -187,8 +184,8 @@ public class ClientThread implements Runnable {
             }else{
                 try {
                     System.out.println("Sending Ujoind! user: "+ userList.GetLastUser());
-                    outToServer.write(message.userJoined(LastUser));
-                    LastUser = userList.GetLastUser();
+                    outToServer.write(message.userJoined(this.LastUser));
+                    this.LastUser = userList.GetLastUser();
                 } catch (IOException e) {e.printStackTrace();}
             }
             //do shit, shits done!

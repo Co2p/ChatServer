@@ -32,6 +32,67 @@ public class catalogue {
     static ArrayList<Thread> Threads = new ArrayList<Thread>();
 
     catalogue(){}
+
+
+
+    private static ArrayList<byte[]> ClientMessages2 = new ArrayList<byte[]>();
+    private static ArrayList<byte[]> QuoeMessages = new ArrayList<byte[]>();
+    private static ArrayList<Integer> ClientMessagesID2 = new ArrayList<Integer>();
+    private static ArrayList<Integer> QuoeIds = new ArrayList<Integer>();
+    private static int index = 0;
+    private static boolean initsoflistsdone = false;
+    private static boolean QuoeInuse = false;
+
+
+    public static ArrayList<Integer> getQuoeids(){
+        return new ArrayList<Integer>(QuoeIds);
+    }
+    public static int GetIndex(){
+        return index;
+    }
+
+    public static ArrayList<byte[]> getQuoeMessages(){
+        return new ArrayList<byte[]>(QuoeMessages);
+    }
+
+
+    public static boolean addItemToQuoue(byte[] mess, int ID){
+        if(QuoeInuse == false){
+            QuoeInuse = true;
+            QuoeMessages.add(mess);
+            QuoeIds.add(ID);
+            QuoeInuse = false;
+            return true;
+        }else{ return false;}
+    }
+
+    public static int addtoid(){
+        index ++;
+        return  index;
+    }
+    public static boolean fillArrays(){
+        if(!initsoflistsdone){
+            for(int g = 0; g < 256; g++){
+                byte[] byt = new byte[]{1};
+                ClientMessages.add(byt);
+                ClientMessagesID.add(addtoid());
+                initsoflistsdone = true;
+                }
+            }
+        return initsoflistsdone;
+    }
+    public static ArrayList<Integer> getmasID(){
+        fillArrays();
+        return new ArrayList<Integer>(ClientMessagesID2);
+    }
+    public static ArrayList<byte[]> getCNameMessages(){
+        fillArrays();
+        return new ArrayList<byte[]>(ClientMessages2);
+    }
+
+
+
+
     public static ArrayList<ArrayList> GetMessageQuoe(){
         return LastMessage;
     }

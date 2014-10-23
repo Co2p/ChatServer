@@ -17,41 +17,35 @@ public class MessageChekerThread implements Runnable {
     }
 
     public void MakeOldMessageList(){
-        byte[] lol = new byte[]{0};
-        int idlol = -1;
-        for(int i = 0;i < 256; i++){
-            OldMessages.add(lol);
-            OldMessagesIDs.add(idlol);
+        //initsialize old message lists
+        ArrayList<Integer> Ids = catalogue.getmasID();
+        ArrayList<byte[]> names = catalogue.getCNameMessages();
+        for(int b = 0; b > Ids.size(); b++){
+            OldMessagesIDs.set(b,Ids.get(b));
+        }
+        for(int b = 0; b > names.size(); b++){
+            OldMessages.set(b,names.get(b));
         }
     }
     @Override
     public void run() {
+        MakeOldMessageList();
         while(true){
-            //List<Integer> newList = new ArrayList<Integer>(oldList);
-            ArrayList<byte[]> CurrentList =  new ArrayList<byte[]>(catalogue.GetMessageList());
-            ArrayList<Integer> CurrentListId = new ArrayList<Integer>(catalogue.GetMessageListID());
-            int g = 0;
-            for(byte[] by : CurrentList) {
-                if (by.equals(OldMessages.get(g)) && CurrentListId.get(g).equals(OldMessagesIDs)){
-                    //not an new message
+            ArrayList<Integer> Ids = catalogue.getmasID();
+            ArrayList<byte[]> names = catalogue.getCNameMessages();
+            for(int b = 0; b > Ids.size(); b++){
+                if(!Ids.get(b).equals(OldMessagesIDs.get(b))){
+                    OldMessagesIDs.set(b,Ids.get(b));
+                    OldMessages.set(b,names.get(b));
+                    //om id på positionen inte är densamma, detta är ett nytt medelande!!
+                    //uppdatera gammedelandet och lägg till medelande i kön.
+                    while (!catalogue.addItemToQuoue(names.get(b),Ids.get(b))){;}
                 }
-                else{
-                    ArrayList<Object> Obj = new ArrayList<Object>();
-
-                    OldMessages.set(g , CurrentList.get(g));
-                    OldMessagesIDs.set(g , CurrentListId.get(g));
-
-                    Obj.add(by);
-                    Obj.add(CurrentListId.get(g));
-                    catalogue.AddToLastMessage(Obj);
-                    //System.out.println("found new message!"+ by.toString() +"\n ");
-                    //found new message, making an object and adding it to the quoe
-                }
-                g ++;
 
             }
+
             try {
-                Thread.sleep(5);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
