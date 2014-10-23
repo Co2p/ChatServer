@@ -73,7 +73,7 @@ public class ClientThread implements Runnable {
                         MyName = Usernamr;
                         User user = createUser(Usernamr);
                         ThreadUserId = userList.addUser(user);
-                        if (!ThreadUserId.equals(null)) {//om medelandet är ett Join
+                        if (!ThreadUserId.equals(null)) {//om meddelandet är ett Join
                             try {
                                 outToServer.write(message.nickNames());
                                 userList.setLastUser(MyName);
