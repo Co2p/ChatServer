@@ -8,26 +8,144 @@ import java.util.ArrayList;
  * @author Gordon, Isidor, Tony 23 October 2014
  */
 public class catalogue {
-
+    //TODO rensa hela den här klassen på onödiga metoder och variabler
     private static int idNumber;
     private static boolean keepAlive;
-    private static String[] ClientMessages = new String[256];
+
+    static ArrayList<byte[]> ClientMessages = new ArrayList<byte[]>();
+    static ArrayList<Integer> ClientMessagesID = new ArrayList<Integer>();
+
     private static String[] OldClientMessages = new String[256];
     private static String name;
+    private static int port;
     private static server nameServer = new server();
     private static server thisServer = new server();
     private static boolean ClientListenerAlive = false;
     public static boolean threadSafeChek = true;
     private static int idTop = 0;
+    private static boolean Messagelistfilled = false;
+    private static ArrayList <ArrayList> LastMessage = new ArrayList <ArrayList>();
+    private static int Message_ID = 1;
+
+
 
     static ArrayList<Thread> Threads = new ArrayList<Thread>();
 
     catalogue(){}
 
 
+
+    private static ArrayList<byte[]> ClientMessages2 = new ArrayList<byte[]>();
+    private static ArrayList<byte[]> QuoeMessages = new ArrayList<byte[]>();
+    private static ArrayList<Integer> ClientMessagesID2 = new ArrayList<Integer>();
+    private static ArrayList<Integer> QuoeIds = new ArrayList<Integer>();
+    private static int index = 0;
+    private static boolean initsoflistsdone = false;
+    private static boolean QuoeInuse = false;
+
+
+    public static ArrayList<Integer> getQuoeids(){
+        return new ArrayList<Integer>(QuoeIds);
+    }
+    public static int GetIndex(){
+        return index;
+    }
+
+    public static ArrayList<byte[]> getQuoeMessages(){
+        return new ArrayList<byte[]>(QuoeMessages);
+    }
+
+
+    public static boolean addItemToQuoue(byte[] mess, int ID){
+        if(QuoeInuse == false){
+            QuoeInuse = true;
+            QuoeMessages.add(mess);
+            QuoeIds.add(ID);
+            QuoeInuse = false;
+            return true;
+        }else{ return false;}
+    }
+
+    public static int addtoid(){
+        index ++;
+        return  index;
+    }
+    public static boolean fillArrays(){
+        if(!initsoflistsdone){
+            for(int g = 0; g < 256; g++){
+                byte[] byt = new byte[]{1};
+                ClientMessages.add(byt);
+                ClientMessagesID.add(addtoid());
+                initsoflistsdone = true;
+                }
+            }
+        return initsoflistsdone;
+    }
+    public static ArrayList<Integer> getmasID(){
+        fillArrays();
+        return new ArrayList<Integer>(ClientMessagesID2);
+    }
+    public static ArrayList<byte[]> getCNameMessages(){
+        fillArrays();
+        return new ArrayList<byte[]>(ClientMessages2);
+    }
+
+
+
+
+    public static ArrayList<ArrayList> GetMessageQuoe(){
+        return LastMessage;
+    }
+    public static void AddToLastMessage(ArrayList obj){
+        if(LastMessage.size() < 100){
+            LastMessage.add(obj);
+        }
+        else{
+            LastMessage.add(0,obj);//probably need to remove the position 101 here...
+        }
+    }
+    public static int UpdateMessageId(){
+        Message_ID ++;
+        System.out.println("updating id \n ");
+        return Message_ID;
+    }
+    public static ArrayList<byte[]> GetMessageList(){
+        return  ClientMessages;
+    }
+    public static ArrayList<Integer> GetMessageListID(){
+        return  ClientMessagesID;
+    }
+
+    public static void setMessage (int Index, byte[] message){
+        //TODO: is this safe?
+        //TODO:FUUUUCK!
+        if(fillmessagelist()){
+            System.out.println("setting client message and id\n ");
+            ClientMessages.set(Index ,message);
+            ClientMessagesID.set(Index ,UpdateMessageId());
+            System.out.println("done updating id's\n ");
+        }
+    }
+    private static boolean fillmessagelist(){
+       if(!Messagelistfilled){
+           Messagelistfilled = true;
+           byte[] lol = new byte[]{0};
+           int g = -1;
+           for(int i = 0;i < 256; i++){
+               ClientMessages.add(lol);
+               ClientMessagesID.add(g);
+           }
+           ArrayList<Object> Obj = new ArrayList<Object>();
+           Obj.add(Message_ID);
+           Obj.add(lol);
+           LastMessage.add(Obj);
+       }
+        return true;
+    }
+
     /**
-     * Adds a thread to a list of all of the running threads
-     * @param athread The thread to be added
+     * adds a new thread to the clientlist used in keeping track of all the threads
+     * @param athread   the thread to be added to the list
      */
     public static void addThread(Thread athread){
         Threads.add(athread);
@@ -49,20 +167,6 @@ public class catalogue {
         }
     }
 
-
-    public static String GetMessage(int Index){
-        String Mess = null;
-        if (ClientMessages[Index].length() > 1) {
-            Mess = ClientMessages[Index];
-        }
-        return Mess;
-    }
-
-    public static void SetMessage(int Index, String mess){
-        OldClientMessages[Index] = ClientMessages[Index];
-        ClientMessages[Index] = mess;
-
-    }
 
     public static void setThisServer(InetAddress ip, int port){
         thisServer.setIp(ip);
@@ -86,11 +190,25 @@ public class catalogue {
     }
 
     /**
-     * Sets the user name
-     * @param name user name
+     * Sets the server name
+     * @param name server name
      */
     public static void setName(String name) {
         catalogue.name = name;
+    }
+
+    /**
+     * Sets the server port
+     * @param port the server port
+     */
+    public static void setPort(int port){
+        catalogue.port = port;
+    }
+    /**
+     * Gets the server port
+     */
+    public static int getPort(){
+        return catalogue.port;
     }
 
     /**
@@ -120,8 +238,8 @@ public class catalogue {
     }
 
     /**
-     * Returns the user name
-     * @return user name
+     * Returns the server name
+     * @return server name
      */
     public static String getName() {
         return name;

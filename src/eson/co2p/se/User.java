@@ -3,46 +3,50 @@ package eson.co2p.se;
 import java.net.InetAddress;
 
 /**
- * Created by root on 2014-10-21.
+ * User object, handles all information regarding users
+ *
+ * @author Isidor, Tony and Gordon on  2014-10-21.
  */
 public class User {
     String nickname;
-    InetAddress ip;
-    int port;
     int ID;
 
+    /**
+     * Constructor for user, adds a nickname and creates the object
+     * @param nickname  the name of the connected user
+     */
     public User(String nickname){
         setNickname(nickname);
     }
 
+    /**
+     * sets a new nickname for the user
+     * @param nickname  the new nickname
+     */
     public void setNickname(String nickname){
         this.nickname = nickname.replaceAll("\0", "");
     }
 
-    public void setIp(InetAddress ip){
-        this.ip = ip;
-    }
-
-    public void setPort(int port){
-        this.port = port;
-    }
-
+    /**
+     * sets the ID number for the user
+     * @param ID the ID for the user
+     */
     public void setID(int ID){
         this.ID = ID;
     }
 
+    /**
+     * gets the nick of the user
+     * @return  nickname
+     */
     public String getNickname(){
         return nickname;
     }
 
-    public InetAddress getIp(){
-        return ip;
-    }
-    //Gets port
-    public int getPort(){
-        return port;
-    }
-
+    /**
+     * returns the current ID of the user
+     * @return  ID of the user
+     */
     public int getID(){
         return ID;
     }

@@ -5,16 +5,15 @@ import java.net.DatagramSocket;
 import java.util.ArrayList;
 
 /**
- * Created by gordon on 10/10/14.
- *
- * Sends Alive messages to the nameserver.
+ * Calls the methods for connecting to the nameserver and handles keep-alive messages
+ * @author Gordon Tony Isidor on 10/10/14.
  */
 public class nameServerConnection {
-
     private ArrayList<Integer> format = new ArrayList<Integer>();
     private ArrayList<Object> content = new ArrayList<Object>();
     byte[] outputStream;
 
+    //TODO this constructor is never called, is it needed?
     public nameServerConnection(){
         while (catalogue.keepAlive()){
             try {
@@ -25,19 +24,16 @@ public class nameServerConnection {
         }
 }
 
-
-
+    /**
+     *  Alive sends an alive-message to the nameserver keeping the connection between
+     *  the two alive whilst the server is on
+     * @throws Exception
+     */
     public void alive() throws Exception{
-        System.out.println("Filled array list!");
-
-        //BufferedReader nameserverAnswere = new BufferedReader(new InputStreamReader("OP: 1"));
-        //String nameserverAnswere = LOL ;
         DatagramSocket clientSocket = new DatagramSocket();
 
-        byte[] sendData = new byte[65507];
         byte[] receiveData = new byte[65507];
-
-        sendData = outputStream;
+        byte[] sendData = outputStream;
 
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
 

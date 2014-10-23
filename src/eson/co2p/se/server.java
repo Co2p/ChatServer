@@ -5,7 +5,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * Created by gordon on 15/10/14.
+ * Main method for the server, handles setting the connection of the name-server
+ * and handling the threads of connected users
+ * @author Tony, isidor and gordon on 15/10/14.
  */
 public class server {
 
@@ -13,10 +15,13 @@ public class server {
     private String name;
     private int port;
 
+    /**
+     * Creates and starts a new server and listens for new connections made to the server
+     * @return  true when the server is closed
+     */
     public boolean StartServer(){
-        //TODO Get port from correct place, lol
         ServerSocket serverSocket = null;
-        port = 8888;
+        port = catalogue.getPort();
 
         //TODO FIX client counter...
         int nrofconnections = 0;
@@ -24,7 +29,7 @@ public class server {
 
         try {
             serverSocket = new ServerSocket(port);
-            //every time an connection is made, start an new clientthread.
+            //every time a connection is made, start a new client-thread.
 
             while (nrofconnections < maxconnections) {
                 System.out.print("Listening for clients..\n");
