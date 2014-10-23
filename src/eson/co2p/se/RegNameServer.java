@@ -67,6 +67,14 @@ public class RegNameServer {
             System.out.println("Server is now set to keep alive");
         }
     }
+
+    /**
+     * Returns the public ip of the server, uses a service provided by amazon for
+     * returning the public ip as InetAddress cannot locate the public IP.
+     * This is not required by the server if the nameserver is on the same local network
+     * @return  the public ip of the server
+     * @throws Exception    if the server can't connect to the service
+     */
     public InetAddress getPublicIp() throws Exception{
         URL whatismyip = new URL("http://checkip.amazonaws.com");
         BufferedReader in = null;
