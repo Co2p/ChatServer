@@ -62,12 +62,12 @@ public class ClientThread implements Runnable {
                 try {
                     bytesRead = Recived_Data.read(messageByte);
                 } catch (Exception e) {;}
-                System.out.print("............");
+                System.out.print("............\n");
                 if (bytesRead > 8) {
                     PDU temp = new PDU(messageByte, messageByte.length);
                     String Usernamr = checkReg(temp);
                     System.out.println("Username: " + Usernamr + "\n");
-                    if (!Usernamr.equals(null)) {
+                    if (!Usernamr.isEmpty()) {
                         MyName = Usernamr;
                         User user = createUser(Usernamr);
                         ThreadUserId = userList.addUser(user);
@@ -104,6 +104,7 @@ public class ClientThread implements Runnable {
         User user = new User(name);
         return user;
     }
+
 
     private String checkReg (PDU data){
         //Kolla om op-koden är REG, annars skicka tillbaks null
