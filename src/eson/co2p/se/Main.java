@@ -5,9 +5,13 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * Call the server with
+ * Main
+ * The main method used for setting all server values, calling the nameserver
+ * and starting the serverobject
+ * @author Isidor Tony and Gordon
  */
 public class Main {
+    //  Default values
     private static String nameServerAddress = "itchy.cs.umu.se";
     private static int nameServerPort = 1337;
     private static String serverName = "default";
@@ -33,6 +37,11 @@ public class Main {
         while(ThisServer.StartServer()){;} //UEeWhatIDidThere?
     }
 
+    /**
+     * Gets the args from main and checks so each value is the correct value
+     * if any wrong value is inserted than use the default values
+     * @param args  the args entered as the server is started
+     */
     private static void getArgs(String[] args){
         if(args.length == 4) {
             nameServerAddress = args[0];
