@@ -161,6 +161,8 @@ public class ClientThread implements Runnable {
                         System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
                         userList.removeUser(ThreadUserId);
                         while (!catalogue.AddMessade(ThreadUserId,ret));
+                        userList.printAvailableIds();
+                        break;
                     }else if(Opcode == OpCodes.CHNICK){
                         System.out.println("Found user trying to change nick");
                         System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
