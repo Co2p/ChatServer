@@ -131,7 +131,7 @@ public class ClientThread implements Runnable {
 
                     if(Opcode == OpCodes.JOIN){
                         PDU temp = new PDU(messageByteNew, messageByteNew.length);
-                        String Usernamr = checkReg(temp);
+                        String Usernamr = checkReg(temp).replaceAll("\0", "");
                         System.out.println("Username: " + Usernamr + "\n");
                         if (!Usernamr.equals(null)) {
                             this.MyName = Usernamr;
@@ -170,7 +170,7 @@ public class ClientThread implements Runnable {
                         PDU msg = new PDU(messageByteNew, messageByteNew.length);
                         String newNick = null;
                         try {
-                            newNick = new String(msg.getSubrange(4, msg.getByte(1)), "UTF-8");
+                            newNick = new String(msg.getSubrange(4, msg.getByte(1)), "UTF-8").replaceAll("\0", "");
                         }catch(UnsupportedEncodingException e){
                             e.printStackTrace();
                         }
