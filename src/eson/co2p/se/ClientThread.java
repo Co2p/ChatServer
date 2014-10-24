@@ -123,6 +123,10 @@ public class ClientThread implements Runnable {
                     messageByteNew = new byte[bytesRead];
                 }catch(NegativeArraySizeException e){
                     messageByteNew = message.userLeaved(userList.getUser(ThreadUserId));
+                    userList.removeUser(ThreadUserId);
+                    while (!catalogue.AddMessade(ThreadUserId,remessageByteNewt));
+                    userList.printAvailableIds();
+                    break;
                 }
 
                 for(int i = 0; i < bytesRead; i++ ){
