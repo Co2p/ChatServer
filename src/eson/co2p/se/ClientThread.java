@@ -147,6 +147,13 @@ public class ClientThread implements Runnable {
                         String Usernamr = checkReg(temp).replaceAll("\0", "");
                         //System.out.println("Username: " + Usernamr + "\n");
                         if (!Usernamr.equals(null)) {
+                            if(userList.isUser(Usernamr)) {
+                                int number = 0;
+                                while (userList.isUser(Usernamr + number)) {
+                                    number++;
+                                }
+                                Usernamr = Usernamr + number;
+                            }
                             this.MyName = Usernamr;
                             User user = createUser(Usernamr);
                             ThreadUserId = userList.addUser(user);

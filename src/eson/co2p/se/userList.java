@@ -26,6 +26,13 @@ public class userList {
     }
 
     /**
+     *
+     */
+    public static boolean isUser(String name){
+        return userhash.containsKey(name);
+    }
+
+    /**
      * sets the latest user connected to the server (used by UJOIN)
      * @param Name  Nickname of the latest connected user
      */
