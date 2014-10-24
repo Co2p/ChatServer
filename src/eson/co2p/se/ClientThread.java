@@ -124,10 +124,11 @@ public class ClientThread implements Runnable {
                     messageByteNew[i] =  messageByte[i];
                 }
                 //System.out.print("............\n");
-                if (bytesRead > 8) {
+                if (bytesRead > 3) {
                     System.out.print("getting  op\n");
                     int Opcode = message.getOp(messageByteNew);
                     System.out.print("op is:" + Opcode + "\n");
+
                     if(Opcode == OpCodes.JOIN){
                         PDU temp = new PDU(messageByteNew, messageByteNew.length);
                         String Usernamr = checkReg(temp);
