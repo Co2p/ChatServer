@@ -119,7 +119,11 @@ public class ClientThread implements Runnable {
 
                 } catch (Exception e) {;}
                 //TODO java.lang.NegativeArraySizeException on line 122 when client dc unexpected
-                messageByteNew = new byte[bytesRead];
+                try {
+                    messageByteNew = new byte[bytesRead];
+                }catch(NegativeArraySizeException e){
+                    messageByteNew = message.userLeaved(userList.getUser(ThreadUserId));
+                }
 
                 for(int i = 0; i < bytesRead; i++ ){
                     messageByteNew[i] =  messageByte[i];
