@@ -158,7 +158,7 @@ public class ClientThread implements Runnable {
                         byte[] ret = message.userLeaved(userList.getUser(ThreadUserId));
                         System.out.println("Trying to handle user left");
                         System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
-                        catalogue.setMessage(ThreadUserId,ret);
+                        while (!catalogue.AddMessade(ThreadUserId,ret));
                     }else if(Opcode == OpCodes.CHNICK){
                         System.out.println("Found user trying to change nick");
                         System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
@@ -173,7 +173,7 @@ public class ClientThread implements Runnable {
                         if(newNick != null) {
                             byte[] ret = message.changeNick(userList.getUser(ThreadUserId), newNick);
                             System.out.println("Trying to handle user changing nick: '" + newNick + "'");
-                            catalogue.setMessage(ThreadUserId, ret);
+                            while (!catalogue.AddMessade(ThreadUserId,ret));
                         }else{
                             System.out.println("Can't handle user changing nick");
                         }
