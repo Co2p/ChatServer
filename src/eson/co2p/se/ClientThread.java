@@ -17,6 +17,8 @@ public class ClientThread implements Runnable {
     private Socket passedSocket;
     private Integer ThreadUserId;
 
+    String ClientIp = "null";
+
 
     private String LastUser = "default";
     private String MyName = "default";
@@ -53,7 +55,7 @@ public class ClientThread implements Runnable {
         for(int g = 0; g < QIds.size(); g++ ){
             if(this.LastMessageId < QIds.get(g)){
                 Messages.add(Qnames.get(g));
-                System.out.println("adding message: " + Qnames.get(g) + " .. " + g);
+                //System.out.println("adding message: " + Qnames.get(g) + " .. " + g);
                 this.LastMessageId = QIds.get(g);
             }
         }
@@ -93,7 +95,7 @@ public class ClientThread implements Runnable {
                 ArrayList<byte[]> Messagesleft = ChekMessages();
                 //System.out.println("Values: " +Messagesleft.size()+" empty?: "+ Messagesleft.isEmpty());
                 if (!Messagesleft.isEmpty()){
-                    System.out.print("messages left: " + Messagesleft + "\n");
+                    //System.out.print("messages left: " + Messagesleft + "\n");
                     int inde = 0;
                     ArrayList<byte[]> Messagestosend_copy = new ArrayList<byte[]>(Messagesleft);
                     ArrayList<Integer> removelist = new ArrayList<Integer>();
@@ -101,7 +103,7 @@ public class ClientThread implements Runnable {
                     for(byte[] sendbyte :Messagesleft){
                         try {
                             outToServer.write(sendbyte);
-                            System.out.println("Sent message!" + new String(sendbyte, "UTF-8") + "\n");
+                            //System.out.println("Sent message!" + new String(sendbyte, "UTF-8") + "\n");
                         } catch (IOException e) {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }
@@ -124,6 +126,8 @@ public class ClientThread implements Runnable {
                 }catch(NegativeArraySizeException e){
                     messageByteNew = message.userLeaved(userList.getUser(ThreadUserId));
                     userList.removeUser(ThreadUserId);
+                    while(!catalogue.RemoveHashKey(ClientIp));
+                    //System.out.println("Leaving...");
                     while (!catalogue.AddMessade(ThreadUserId,messageByteNew));
                     //userList.printAvailableIds();
                     break;
@@ -134,24 +138,38 @@ public class ClientThread implements Runnable {
                 }
                 //System.out.print("............\n");
                 if (bytesRead > 3) {
-                    System.out.print("getting  op\n");
+                    //System.out.print("getting  op\n");
                     int Opcode = message.getOp(messageByteNew);
-                    System.out.print("op is:" + Opcode + "\n");
+                    //System.out.print("op is:" + Opcode + "\n");
 
                     if(Opcode == OpCodes.JOIN){
                         PDU temp = new PDU(messageByteNew, messageByteNew.length);
                         String Usernamr = checkReg(temp).replaceAll("\0", "");
-                        System.out.println("Username: " + Usernamr + "\n");
+                        //System.out.println("Username: " + Usernamr + "\n");
                         if (!Usernamr.equals(null)) {
                             this.MyName = Usernamr;
                             User user = createUser(Usernamr);
                             ThreadUserId = userList.addUser(user);
                             if (!ThreadUserId.equals(null)) {//om medelandet är ett Join
                                 try {
-                                    outToServer.write(message.nickNames());
-                                    userList.setLastUser(this.MyName);
-                                    this.LastUser = userList.GetLastUser();
-                                    System.out.print("Sent accept!\n");
+                                    ClientIp = passedSocket.getRemoteSocketAddress().toString();
+                                    int h;
+                                    while(true){
+                                        h = catalogue.ExistInHashNadd(ClientIp);
+                                        if(h != -1){
+                                            break;
+                                        }
+                                    }
+                                    if(h <= 5) { //only accepting 5 users whit the same ip
+                                        //System.out.println("Client ip: " + ClientIp);
+                                        outToServer.write(message.nickNames());
+                                        userList.setLastUser(this.MyName);
+                                        this.LastUser = userList.GetLastUser();
+                                        System.out.print("Sent accept!\n");
+                                    }
+                                    else{
+                                        System.out.print("Diden't accept user, alredy got 5 from the same ip!!\n");
+                                    }
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -159,22 +177,21 @@ public class ClientThread implements Runnable {
                         }
                     } else if(Opcode == OpCodes.MESSAGE){
                         byte[] BS = message.reMessage(messageByteNew, ThreadUserId);
-                        System.out.println("Handeling op code 10 , thread" + ThreadUserId +" \n ");
+                        //System.out.println("Handeling op code 10 , thread" + ThreadUserId +" \n ");
                         //catalogue.setMessage(ThreadUserId,BS);
                         while (!catalogue.AddMessade(ThreadUserId,BS));
-                        System.out.println("added this fucka \n ");
 
                     }else if (Opcode == OpCodes.QUIT){
                         byte[] ret = message.userLeaved(userList.getUser(ThreadUserId));
                         System.out.println("Trying to handle user left");
-                        System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
                         userList.removeUser(ThreadUserId);
+                        while(!catalogue.RemoveHashKey(ClientIp));
+                        System.out.println("Leaving...");
                         while (!catalogue.AddMessade(ThreadUserId,ret));
                         //userList.printAvailableIds();
                         break;
                     }else if(Opcode == OpCodes.CHNICK){
                         System.out.println("Found user trying to change nick");
-                        System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
                         //PDU msg = new PDU(messageByte, messageByte.length);
                         PDU msg = new PDU(messageByteNew, messageByteNew.length);
                         String newNick = null;
@@ -200,7 +217,7 @@ public class ClientThread implements Runnable {
                     }
             }else{
                 try {
-                    System.out.println("Sending Ujoind! user: "+ userList.GetLastUser());
+                    //System.out.println("Sending Ujoind! user: "+ userList.GetLastUser());
                     outToServer.write(message.userJoined(this.LastUser));
                     this.LastUser = userList.GetLastUser();
                 } catch (IOException e) {e.printStackTrace();}

@@ -44,7 +44,7 @@ public class KeepAlive {
             //  servers every 10 seconds, so even if two keepalive messages gets lost in the cyberspace
             //  it doesn't get disconnected
             try {
-                System.out.print("now sleeping\n");
+                //System.out.print("now sleeping\n");
                 Thread.sleep(2400);
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

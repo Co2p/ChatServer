@@ -2,6 +2,7 @@ package eson.co2p.se;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 /**
  * Saves states and information about the server
@@ -23,18 +24,18 @@ public class catalogue {
     private static boolean ClientListenerAlive = false;
     public static boolean threadSafeChek = true;
     private static int idTop = 0;
-    private static boolean Messagelistfilled = false;
-    private static ArrayList <ArrayList> LastMessage = new ArrayList <ArrayList>();
-    private static int Message_ID = 1;
 
 
 
     static ArrayList<Thread> Threads = new ArrayList<Thread>();
 
     catalogue(){}
+    //this is to not alow the same ip to connect multiply times
+    //exprimental
+    private static Hashtable Iphash = new Hashtable();
+    private static boolean ThreadSafeHash = true;
 
-
-
+    // all of thise are critical for the server to work
     private static ArrayList<byte[]> ClientMessages2 = new ArrayList<byte[]>();
     private static ArrayList<byte[]> QuoeMessages = new ArrayList<byte[]>();
     private static ArrayList<Integer> ClientMessagesID2 = new ArrayList<Integer>();
@@ -44,6 +45,52 @@ public class catalogue {
     private static boolean QuoeInuse = false;
     private static boolean Safeaddmessage = true;
 
+    public static boolean RemoveHashKey(String ip){
+        if(ThreadSafeHash){
+            ThreadSafeHash = false;
+            if (Iphash.containsKey(ip)){
+                int val = (Integer)Iphash.get(ip) - 1;
+                if(val <= 0){
+                    Iphash.remove(ip);
+                    ThreadSafeHash = true;
+                    return true;
+                }
+                else{
+                    Iphash.put(ip,val);
+                    ThreadSafeHash = true;
+                    return true;
+                }
+            }
+            else{
+                ThreadSafeHash = true;
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    public static int ExistInHashNadd(String ip){
+        if(ThreadSafeHash){
+            ThreadSafeHash = false;
+            if(Iphash.containsKey(ip)){
+                int val = (Integer)Iphash.get(ip);
+                Iphash.put(ip,val+1);
+                ThreadSafeHash = true;
+                return (Integer)Iphash.get(ip);
+            }
+            else{
+                Iphash.put(ip,1);
+                ThreadSafeHash = true;
+                return 1;
+            }
+        }
+        else {
+            return -1;
+        }
+
+    }
+
     public static void addNewId(int index){
         int NewId = addtoid();
         ClientMessagesID2.set(index, NewId);
@@ -51,13 +98,13 @@ public class catalogue {
     public static boolean AddMessade(int index,byte[] mess ){
         fillArrays();
         if(Safeaddmessage){
-            System.out.println("ts: true");
+            //System.out.println("ts: true");
             Safeaddmessage = false;
-            System.out.println("Adding message on pos: " + index);
+            //System.out.println("Adding message on pos: " + index);
             ClientMessages2.set(index,mess);
             addNewId(index);
             Safeaddmessage = true;
-            System.out.println("ts: false");
+            //System.out.println("ts: false");
             return true;
         }else {
             return false;
@@ -78,7 +125,7 @@ public class catalogue {
 
     public static boolean addItemToQuoue(byte[] mess, int ID){
         if(QuoeInuse == false){
-            if(QuoeMessages.size() < 1 ) {
+            if(QuoeMessages.size() < 100) {
                 QuoeInuse = true;
                 QuoeMessages.add(mess);
                 QuoeIds.add(ID);

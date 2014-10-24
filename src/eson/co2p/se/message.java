@@ -68,7 +68,7 @@ public class message {
             System.out.println("ID: '" + catalogue.getIdNumber() + "'" );
             return true;
         }else{
-            System.out.println("Got message, didn't get ACK " + rawdata.getByte(0));
+            System.out.println("Got message, didn't get ACK (not good...)" + rawdata.getByte(0));
             return false;
         }
     }
@@ -122,15 +122,10 @@ public class message {
         int checkSum = rawdata.getByte(3);
         if (ID != -1) { //  Check if the thread adding the message failed
             String nickname = userList.getUser(ID).getNickname();
-                try{
-                    System.out.println("message: " + new String(rawdata.getSubrange(12, rawdata.getByte(1)), "UTF-8") + "nick: " + nickname);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
                 rawdata.setByte(2, (byte) nickname.length());
                 rawdata.setInt(8, getTime());
                 int length = div4(rawdata.length());
-                System.out.println("length: '" + length + "', messageLength: '" + rawdata.getShort(4) + "'");
+                 //System.out.println("length: '" + length + "', messageLength: '" + rawdata.getShort(4) + "'");
                 rawdata.extendTo(length + div4(nickname.length()));
                 try {
                     rawdata.setSubrange(12 + div4(rawdata.getShort(4)), nickname.getBytes("UTF-8"));
@@ -153,7 +148,7 @@ public class message {
         int connected = userList.getConnected();
         PDU rawdata = new PDU(4);
         rawdata.setByte(0, (byte)OpCodes.NICKS);
-        System.out.println("Hur många den tror är connectade: " + connected);
+        System.out.println("connected users...: " + connected);
         rawdata.setByte(1, (byte)connected);
         int totSize = 0;
         try {
@@ -163,9 +158,9 @@ public class message {
                     int currentSize = rawdata.length();
                     int nickLength = s.getNickname().getBytes().length;
                     rawdata.extendTo(currentSize + nickLength + 1);
-                    System.out.println("CurrentSize = " + currentSize + ", nickLength = " + nickLength);
+                    //System.out.println("CurrentSize = " + currentSize + ", nickLength = " + nickLength);
                     rawdata.setSubrange(currentSize, (s.getNickname() + "\0").getBytes("UTF-8"));
-                    System.out.println("NICK: " + s.getNickname());
+                    //System.out.println("NICK: " + s.getNickname());
                     totSize += (nickLength + 1);
                 }
             }

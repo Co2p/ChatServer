@@ -12,9 +12,9 @@ import java.net.UnknownHostException;
  */
 public class Main {
     //  Default values
-    private static String nameServerAddress = "85.11.41.32";
-    private static int nameServerPort = 1338;
-    private static String serverName = "isidor luktar kiss";
+    private static String nameServerAddress = "itchy.cs.umu.se";
+    private static int nameServerPort = 1337;
+    private static String serverName = "TimeEdit";
     private static int serverPort = 8888;
 
     /**

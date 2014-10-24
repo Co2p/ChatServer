@@ -38,8 +38,8 @@ public class MessageChekerThread implements Runnable {
     @Override
     public void run() {
         MakeOldMessageList();
-        System.out.println("\nstart update thread....\n");
-        System.out.println("OldMessagesIDs: " +OldMessagesIDs.size() + " OldMessages: " + OldMessages.size());
+        //System.out.println("\nstart update thread....\n");
+        //System.out.println("OldMessagesIDs: " +OldMessagesIDs.size() + " OldMessages: " + OldMessages.size());
 
         while(true){
             ArrayList<Integer> Ids = catalogue.getmasID();
@@ -53,7 +53,7 @@ public class MessageChekerThread implements Runnable {
                     //om id på positionen inte är densamma, detta är ett nytt medelande!!
                     //uppdatera gammedelandet och lägg till medelande i kön.
                     while (!catalogue.addItemToQuoue(names.get(b),Ids.get(b))){;}
-                    System.out.println("\nadded message to qyuo\n");
+                    //System.out.println("\nadded message to qyuo\n");
                 }
 
             }

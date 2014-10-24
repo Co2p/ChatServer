@@ -38,11 +38,11 @@ public class RegNameServer {
         ArrayList<Object> content = new ArrayList<Object>();
         // Tries to send an UDP Get to the nameserver
         try {
-            System.out.println(" " + catalogue.getNameServerInet() + catalogue.getNameServerPort());
+            //System.out.println(" " + catalogue.getNameServerInet() + catalogue.getNameServerPort());//TODO this print are displaying an bugg....
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
             clientSocket.send(sendPacket);
         }catch (Exception e){
-            System.out.print("Failed to send packet");
+            //System.out.print("Failed to send packet");
             e.printStackTrace();
         }
         //  Waits for answer from the nameServer
