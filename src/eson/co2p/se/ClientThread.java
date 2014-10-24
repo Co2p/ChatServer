@@ -118,8 +118,9 @@ public class ClientThread implements Runnable {
                     bytesRead = Recived_Data.read(messageByte);
 
                 } catch (Exception e) {;}
-
+                //TODO java.lang.NegativeArraySizeException on line 122 when client dc unexpected
                 messageByteNew = new byte[bytesRead];
+
                 for(int i = 0; i < bytesRead; i++ ){
                     messageByteNew[i] =  messageByte[i];
                 }

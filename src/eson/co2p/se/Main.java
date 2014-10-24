@@ -14,7 +14,7 @@ public class Main {
     //  Default values
     private static String nameServerAddress = "85.11.41.32";
     private static int nameServerPort = 1338;
-    private static String serverName = "GIT's dödsserver för öppet homosexuella";
+    private static String serverName = "isidor luktar kiss";
     private static int serverPort = 8888;
 
     /**

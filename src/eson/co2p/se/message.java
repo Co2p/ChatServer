@@ -122,11 +122,6 @@ public class message {
         int checkSum = rawdata.getByte(3);
         if (ID != -1) { //  Check if the thread adding the message failed
             String nickname = userList.getUser(ID).getNickname();
-            //  Calculate checksum
-            //if (checkSum != Checksum.calc(rawdata.getBytes(), rawdata.getBytes().length)) {
-            //    System.out.println("Checksum calculation returned wrong checksum");
-            //} else {
-                //  Add the nickname and time into the message header
                 try{
                     System.out.println("message: " + new String(rawdata.getSubrange(12, rawdata.getByte(1)), "UTF-8") + "nick: " + nickname);
                 }catch(Exception e){

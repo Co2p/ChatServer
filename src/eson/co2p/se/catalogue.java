@@ -78,11 +78,22 @@ public class catalogue {
 
     public static boolean addItemToQuoue(byte[] mess, int ID){
         if(QuoeInuse == false){
-            QuoeInuse = true;
-            QuoeMessages.add(mess);
-            QuoeIds.add(ID);
-            QuoeInuse = false;
-            return true;
+            if(QuoeMessages.size() < 1 ) {
+                QuoeInuse = true;
+                QuoeMessages.add(mess);
+                QuoeIds.add(ID);
+                QuoeInuse = false;
+                return true;
+            }
+            else{
+                QuoeInuse = true;
+                QuoeMessages.add(mess);
+                QuoeIds.add(ID);
+                QuoeMessages.remove(0);
+                QuoeIds.remove(0);
+                QuoeInuse = false;
+                return true;
+            }
         }else{ return false;}
     }
 
@@ -112,67 +123,6 @@ public class catalogue {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    public static ArrayList<ArrayList> GetMessageQuoe(){
-        return LastMessage;
-    }
-    public static void AddToLastMessage(ArrayList obj){
-        if(LastMessage.size() < 100){
-            LastMessage.add(obj);
-        }
-        else{
-            LastMessage.add(0,obj);//probably need to remove the position 101 here...
-        }
-    }
-    public static int UpdateMessageId(){
-        Message_ID ++;
-        System.out.println("updating id \n ");
-        return Message_ID;
-    }
-    public static ArrayList<byte[]> GetMessageList(){
-        return  ClientMessages;
-    }
-    public static ArrayList<Integer> GetMessageListID(){
-        return  ClientMessagesID;
-    }
-
-    public static void setMessage (int Index, byte[] message){
-        //TODO: is this safe?
-        //TODO:FUUUUCK!
-        if(fillmessagelist()){
-            System.out.println("setting client message and id\n ");
-            ClientMessages.set(Index ,message);
-            ClientMessagesID.set(Index ,UpdateMessageId());
-            System.out.println("done updating id's\n ");
-        }
-    }
-    private static boolean fillmessagelist(){
-       if(!Messagelistfilled){
-           Messagelistfilled = true;
-           byte[] lol = new byte[]{0};
-           int g = -1;
-           for(int i = 0;i < 256; i++){
-               ClientMessages.add(lol);
-               ClientMessagesID.add(g);
-           }
-           ArrayList<Object> Obj = new ArrayList<Object>();
-           Obj.add(Message_ID);
-           Obj.add(lol);
-           LastMessage.add(Obj);
-       }
-        return true;
-    }
 
     /**
      * adds a new thread to the clientlist used in keeping track of all the threads
