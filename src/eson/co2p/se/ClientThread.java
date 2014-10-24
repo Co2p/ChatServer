@@ -125,7 +125,7 @@ public class ClientThread implements Runnable {
                     messageByteNew = message.userLeaved(userList.getUser(ThreadUserId));
                     userList.removeUser(ThreadUserId);
                     while (!catalogue.AddMessade(ThreadUserId,messageByteNew));
-                    userList.printAvailableIds();
+                    //userList.printAvailableIds();
                     break;
                 }
 
@@ -170,7 +170,7 @@ public class ClientThread implements Runnable {
                         System.out.println("OGABOGABOGABOGBAOGAOGAOBGAO");
                         userList.removeUser(ThreadUserId);
                         while (!catalogue.AddMessade(ThreadUserId,ret));
-                        userList.printAvailableIds();
+                        //userList.printAvailableIds();
                         break;
                     }else if(Opcode == OpCodes.CHNICK){
                         System.out.println("Found user trying to change nick");

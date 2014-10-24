@@ -32,6 +32,7 @@ public class userList {
     public static void setLastUser(String Name){
         LastUser = Name;
     }
+
     /**
      * Adds a user to the array of active users
      * @param user the user to be added
