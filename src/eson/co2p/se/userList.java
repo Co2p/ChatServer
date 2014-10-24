@@ -105,6 +105,15 @@ public class userList {
     }
 
     /**
+     * for testing purposes only
+     */
+    public static void printAvailableIds(){
+        for(Integer ID: removed){
+            System.out.println("ID: " + ID);
+        }
+    }
+
+    /**
      * Runs the first time a user is added, adds 0 -> 254 the arraylist so the user can be added
      */
     private static void firstRun(){
