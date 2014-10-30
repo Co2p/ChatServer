@@ -62,7 +62,6 @@ public class ClientThread implements Runnable {
         return Messages;
     }
 
-
     public boolean NewUserChek(){
         if(this.FirstRun){
             this.FirstRun = false;
@@ -167,7 +166,7 @@ public class ClientThread implements Runnable {
                                             break;
                                         }
                                     }
-                                    if(h <= 5) { //only accepting 5 users whit the same ip
+                                    if(h <= 500) { //only accepting 5 users whit the same ip
                                         //System.out.println("Client ip: " + ClientIp);
                                         outToServer.write(message.nickNames());
                                         userList.setLastUser(this.MyName);

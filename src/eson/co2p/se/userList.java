@@ -65,7 +65,6 @@ public class userList {
      * Sets the user to null and adds the index of the user as the next place to add a user
      * @param ID user ID
      */
-    //TODO if user disconnects by quitting problem, than user don't get removed the list
     public static void removeUser(int ID){
         String tempusername = users.get(ID).getNickname();
         users.set(ID, null);
