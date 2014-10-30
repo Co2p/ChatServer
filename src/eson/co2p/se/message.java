@@ -120,10 +120,15 @@ public class message {
     public static byte[] reMessage(byte[] message, int ID) {
         PDU rawdata = new PDU(message, message.length);
         int checkSum = rawdata.getByte(3);
-
         //  Check if the thread adding the message failed
         if (rawdata.getByte(1)>3 || rawdata.getByte(1)<0 || ID == -1) {
             return null;
+        }
+        //  Check if checksum is fault
+        if(Checksum.calc(message, div4(rawdata.getShort(4)) + 12) != (byte)0){
+            return null;
+            //  Här borde vi skicka ut ett meddelande till klienten att checksumman var fel
+            //  under utskicket
         }
         String nickname = userList.getUser(ID).getNickname();
             rawdata.setByte(2, (byte) nickname.length());
