@@ -123,10 +123,8 @@ public class message {
 
         //  Check if the thread adding the message failed
         if (rawdata.getByte(1)>3 || rawdata.getByte(1)<0 || ID == -1) {
-
             return null;
         }
-
         String nickname = userList.getUser(ID).getNickname();
             rawdata.setByte(2, (byte) nickname.length());
             rawdata.setInt(8, getTime());
@@ -138,6 +136,10 @@ public class message {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            //calculate the new checksum
+            rawdata.setByte(3, (byte)0);
+            rawdata.setByte(3, Checksum.calc(rawdata.getBytes(), 12 + div4(rawdata.getShort(4)) + div4(nickname.length()
+            )));
             return rawdata.getBytes();
         //}
 
