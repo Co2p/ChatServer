@@ -120,22 +120,27 @@ public class message {
     public static byte[] reMessage(byte[] message, int ID) {
         PDU rawdata = new PDU(message, message.length);
         int checkSum = rawdata.getByte(3);
-        if (ID != -1) { //  Check if the thread adding the message failed
-            String nickname = userList.getUser(ID).getNickname();
-                rawdata.setByte(2, (byte) nickname.length());
-                rawdata.setInt(8, getTime());
-                int length = div4(rawdata.length());
-                 //System.out.println("length: '" + length + "', messageLength: '" + rawdata.getShort(4) + "'");
-                rawdata.extendTo(length + div4(nickname.length()));
-                try {
-                    rawdata.setSubrange(12 + div4(rawdata.getShort(4)), nickname.getBytes("UTF-8"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return rawdata.getBytes();
-            //}
+
+        //  Check if the thread adding the message failed
+        if (rawdata.getByte(1)>3 || rawdata.getByte(1)<0 || ID == -1) {
+
+            return null;
         }
-        return null;
+
+        String nickname = userList.getUser(ID).getNickname();
+            rawdata.setByte(2, (byte) nickname.length());
+            rawdata.setInt(8, getTime());
+            int length = div4(rawdata.length());
+             //System.out.println("length: '" + length + "', messageLength: '" + rawdata.getShort(4) + "'");
+            rawdata.extendTo(length + div4(nickname.length()));
+            try {
+                rawdata.setSubrange(12 + div4(rawdata.getShort(4)), nickname.getBytes("UTF-8"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return rawdata.getBytes();
+        //}
+
     }
 
     /**
