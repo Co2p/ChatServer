@@ -249,14 +249,14 @@ public class message {
     /**
      *  Sets and creates a message if a user requested a nickchange in the server
      *
-     * @param user  the user that wants to change nick
+     * @param nickname  the name of the user changing the nickname
      * @param newNick   the new nick of the user
      * @return  the created byte-array containing header and message
      */
-    public static byte[] changeNick(User user, String newNick){
+    public static byte[] changeNick(String nickname, String newNick){
         PDU rawdata = null;
         try {
-            int nickLength = user.getNickname().getBytes("UTF-8").length;
+            int nickLength = nickname.getBytes("UTF-8").length;
             int newNickLength = newNick.getBytes("UTF-8").length;
 
             rawdata = new PDU(8 + div4(nickLength) + div4(newNickLength));
@@ -264,7 +264,7 @@ public class message {
             rawdata.setByte(1, (byte) nickLength);
             rawdata.setByte(2, (byte) newNickLength);
             rawdata.setInt(4, getTime());
-            rawdata.setSubrange(8, user.getNickname().getBytes("UTF-8"));
+            rawdata.setSubrange(8, nickname.getBytes("UTF-8"));
             rawdata.setSubrange(8 + div4(nickLength), newNick.getBytes("UTF-8"));
 
             //  Set a new nickname for the user in his/her object

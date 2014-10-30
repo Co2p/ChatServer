@@ -209,8 +209,9 @@ public class ClientThread implements Runnable {
                         }
                         if(newNick != null) {
                             User user = userList.getUser(ThreadUserId);
+                            String oldNick = user.getNickname();
                             user.setNickname(userList.swapNick(user.getNickname(), newNick));
-                            byte[] ret = message.changeNick(user, user.getNickname());
+                            byte[] ret = message.changeNick(oldNick, user.getNickname());
                             System.out.println("Trying to handle user changing nick: '" + user.getNickname() + "'");
                             while (!catalogue.AddMessade(ThreadUserId,ret));
                         }else{
