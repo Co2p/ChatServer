@@ -266,9 +266,8 @@ public class message {
             rawdata.setInt(4, getTime());
             rawdata.setSubrange(8, user.getNickname().getBytes("UTF-8"));
             rawdata.setSubrange(8 + div4(nickLength), newNick.getBytes("UTF-8"));
+
             //  Set a new nickname for the user in his/her object
-            //TODO check so that this works across threads
-            user.setNickname(newNick);
 
         }catch(UnsupportedEncodingException e){
             e.printStackTrace();

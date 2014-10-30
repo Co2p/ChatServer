@@ -57,6 +57,7 @@ public class userList {
             users.set(ID, user);
         }else{
             System.out.println("UserList full!");
+            return -1;
         }
         return ID;
     }
@@ -118,6 +119,33 @@ public class userList {
         for(Integer ID: removed){
             System.out.println("ID: " + ID);
         }
+    }
+
+    public static String swapNick(String oldNick, String newNick) {
+        /*boolean exists;
+        int number = 0;
+        do {
+            exists = false;
+            if (userhash.contains(newNick)) {
+                exists = true;
+                newNick = newNick + number;
+                number++;
+            }
+        } while (exists);*/
+
+        if(userList.isUser(newNick)) {
+            int number = 0;
+            while (userList.isUser(newNick + number)) {
+                number++;
+            }
+            newNick = newNick + number;
+        }
+
+        int ID = getID(oldNick);
+        userhash.remove(oldNick);
+        userhash.put(newNick, ID);
+
+        return newNick;
     }
 
     /**

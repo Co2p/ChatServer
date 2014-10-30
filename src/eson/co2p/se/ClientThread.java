@@ -155,6 +155,7 @@ public class ClientThread implements Runnable {
                             }
                             this.MyName = Usernamr;
                             User user = createUser(Usernamr);
+                            //TODO userlist.adduser returnerar -1 om listan är full.. hantera!
                             ThreadUserId = userList.addUser(user);
                             if (!ThreadUserId.equals(null)) {//om medelandet är ett Join
                                 try {
@@ -207,8 +208,10 @@ public class ClientThread implements Runnable {
                             e.printStackTrace();
                         }
                         if(newNick != null) {
-                            byte[] ret = message.changeNick(userList.getUser(ThreadUserId), newNick);
-                            System.out.println("Trying to handle user changing nick: '" + newNick + "'");
+                            User user = userList.getUser(ThreadUserId);
+                            user.setNickname(userList.swapNick(user.getNickname(), newNick));
+                            byte[] ret = message.changeNick(user, user.getNickname());
+                            System.out.println("Trying to handle user changing nick: '" + user.getNickname() + "'");
                             while (!catalogue.AddMessade(ThreadUserId,ret));
                         }else{
                             System.out.println("Can't handle user changing nick");
